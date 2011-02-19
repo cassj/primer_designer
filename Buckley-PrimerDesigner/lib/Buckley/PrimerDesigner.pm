@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-package Bio::PrimerDesigner;
+package Buckley::PrimerDesigner;
 
 use base 'Bio::Root::Root';
 
@@ -11,11 +11,13 @@ use Bio::Seq;
 use Bio::SeqIO;
 use Bio::Tools::Run::Primer3Redux;
 
-use Bio::PrimerDesigner::Result;
+use Buckley::PrimerDesigner::Result;
+
+use Scalar::Util qw(blessed);
 
 =head1 NAME
 
-Bio::PrimerDesigner - Primer3 with bells on.
+Buckley::PrimerDesigner - Primer3 with bells on.
 
 =head1 DESCRIPTION
 
@@ -25,7 +27,7 @@ pre-processing of sequences and post- processing of primers
 
 =head1 SYNOPSIS
 
-  my $pd = Bio::PrimerDesigner->new();
+  my $pd = Buckley::PrimerDesigner->new();
 
   $pd->primer3->set_parameters(PARAMNAME=>$paramvalue);
 
@@ -86,7 +88,6 @@ sub seq_fetcher{
    my $subref = shift;
    $self->{_seq_fetcher} = $subref if defined $subref;
    return $self->{_seq_fetcher};
-
 }
 
 
@@ -141,11 +142,12 @@ sub register_pre_process{
   my $is_filter = $params{is_filter} || 0;
   my $description = $params{description} || '';
 
-  $self->throw("pre_process of that name already exists") if ($self->{_pre_process}->{$_});
+  $self->throw("pre_process of that name already exists") if ($self->{_pre_process} && $self->{_pre_process}->{$_});
 
-  $self->{_pre_process}->{$params{name}} = {subref      => $subref,
-					    description => $description,
-					    is_filter   => $is_filter};
+  $self->{_pre_process}->{$name} = {subref      => $subref,
+				    description => $description,
+				    is_filter   => $is_filter};
+
   push @{$self->{_pre_process_order}}, $name;
 
 }
@@ -214,7 +216,7 @@ sub register_post_process{
   my $is_filter = $params{is_filter} || 0;
   my $description = $params{description} || '';
 
-  $self->throw("post_process of that name already exists") if ($self->{_post_process}->{$_});
+  $self->throw("post_process of that name already exists") if ($self->{_post_process} && $self->{_post_process}->{$_});
 
   $self->{_post_process}->{$params{name}} = {subref      => $subref,
 					    description => $description,
@@ -249,12 +251,12 @@ Runs pre-processing, primer3 and post-processing on the given sequences.
 By default, @seqs is expected to be an arrayref of Bio::Seq objects.
 
 Alternatively you can use a seq_fetcher function to resolve an arrayref of
-something else into an array of Bio::Seq objects. 
+something else into an array of Bio::Seq objects.
 
 You can use a predefined SeqFetcher, For example:
 
-  use Bio::PrimerDesigner::SeqFetcher::Ensembl::GeneID;
-  $pd->seq_fetcher(Bio::PrimerDesigner::SeqFetcher::Ensembl->by_gene_id(-species => 'mouse', -foo => 'bar'));
+  use Buckley::PrimerDesigner::SeqFetcher::Ensembl::GeneID;
+  $pd->seq_fetcher(Buckley::PrimerDesigner::SeqFetcher::Ensembl->by_gene_id(-species => 'mouse', -foo => 'bar'));
   $pd->design(@ensembl_ids);
 
 Or you can define your own function
@@ -266,7 +268,7 @@ Or you can define your own function
   }
   $pd->seq_fetcher($subref);
 
-C<design> Returns a Bio::PrimerDesigner::Result object.
+C<design> Returns a Buckley::PrimerDesigner::Result object.
 
 my $get_from_ensembl = sub {my $id = shift; ... fetch from ensembl... ; return $bioseq_obj;}
 $pd->seq_fetcher($get_from_ensembl);
@@ -283,14 +285,14 @@ sub design {
 
   # If we need to, convert the seqs to Bio::Seq objects
   if (defined $self->seq_fetcher){
-    @seqs = &$self->seq_fetcher(@seqs);
+    @seqs = $self->seq_fetcher->(@seqs);
     $self->throw("No sequences returned by seq_fetcher") unless scalar(@seqs);
   }
 
 
   # Run any pre-processes on the sequences
   if (defined $self->registered_pre_processes){
-    foreach my $proc_name ($self->registered_pre_processes){
+    foreach my $proc_name (@{$self->registered_pre_processes}){
       my $proc = $self->{_pre_process}->{$proc_name}->{subref};
       if ($self->{_pre_process}->{$proc_name}->{is_filter} ){
 	@seqs = grep { &$proc($_) } @seqs;
@@ -300,15 +302,46 @@ sub design {
     }
   }
 
-  # Run primer3 on the processed sequences
-  my $res_obj = $self->primer3->run(@seqs);
-
   my @results;
-  while (my $res = $res_obj->next_result){push @results, $res}
+  foreach my $seq (@seqs){
+
+    #do we have any sequence specific parameters set?
+    my $ac = $seq->annotation;
+
+    my @annot_keys = $ac->get_all_annotation_keys;
+    my $test = sub { my $obj = shift; return blessed $obj && $obj->isa('Buckley::Annotation::Parameter::Primer3')};
+    my @annots  = grep { &$test([$ac->get_Annotations($_)]->[0]) }  @annot_keys;
+
+    # temporarily set sequence specific annotations, unless they override a global setting
+    # Note that this *will* override other local settings, so you if you've got multiple pre-processes
+    # registered, you need to make sure that they don't clobber each other's settings. Will improve this at some point.
+    my %local_settings;
+    foreach (@annots){
+      my ($val) = $ac->get_Annotations($_);
+      $self->throw("Sequence-specific parameter trying to override global Primer3 parameter $_") if defined $self->primer3->$_;
+      $local_settings{$_} = $val->value;
+    }
+
+    $self->primer3->set_parameters(%local_settings);
+
+    my $res_obj = $self->primer3->run($seq);
+    my $res = $res_obj->next_result;
+
+    #stick the original sequence object back in.
+    $res->attach_seq($seq);
+    
+    push @results, $res;
+
+    # reset sequence specific annotations
+    foreach (@annots){
+       $self->primer3->$_(undef);
+    }
+
+  }
 
   # Run any post-processing on the results
   if (defined $self->registered_post_processes){
-    foreach my $proc_name ($self->registered_post_processes){
+    foreach my $proc_name (@{$self->registered_post_processes}){
       my $proc = $self->{_post_process}->{$proc_name}->{subref};
       if ($self->{_post_process}->{$proc_name}->{is_filter} ){
 	@results = grep { &$proc($_) } @results;

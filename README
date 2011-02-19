@@ -1,0 +1,22 @@
+Automation of primer design tasks for the Buckley Lab. 
+
+We use Primer3 to design our primers. 
+
+We use Unafold's melt.pl to check the self-hybridisation of the primers. Doesn't work so well on longer sequences so I'm ignoring amplicon self-hybridisation at the moment. Am pondering using some implementation of McCaskill's DP algorithm for partition function calculation on amplicon sequences so we can at least get probabilites of single-strandedness of bases in the amplicon.
+
+We're currently using web interfaces to check what primers are hitting in the genome (USCSs in silico PCR). Really need to automate this.
+
+We get sequences from Ensembl usually. This can be by gene or transcript id or by genome position. Sometimes we just have the sequence.
+
+We have different primer design tasks, for example:
+cDNA detection primers - should ideally cross an exon boundary so as to avoid amplifying genomic contamination.
+genomic primers - typically for ChIP. These often need to target particular genic features, for example transcription start/end sites, splice sites, enhancer sites and so forth. 
+Other sorts of primers - for example messing about with plasmids.
+
+We often need to design many primers at the same time, for example for ChIPseq target validation. 
+
+We'll need a basic command-line interface.
+
+We'll also need a web interface with user-accounts that allows people to manage their primers and allows me to track the success of primers for different tasks and potentially modify primer3 parameters etc. to suit.
+
+

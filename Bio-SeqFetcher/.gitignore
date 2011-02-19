@@ -1,0 +1,11 @@
+/Bio-SeqFetcher*
+.build
+.*.sw[a-z]
+*.un~
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
