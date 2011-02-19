@@ -23,6 +23,7 @@ sub _make_seqs{
     # Get exons (in order they appear in transcript, although start and end are top strand)
     my $trsc_exons = $trsc->get_all_Exons;
     my $seq;
+
     foreach my $exon (@$trsc_exons){
       my $strand = $exon->strand;
       my $chr = $exon->slice->seq_region_name;

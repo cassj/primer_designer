@@ -3,7 +3,7 @@ use warnings;
 
 use Bio::Root::Test;
 
-test_begin(-tests => 29,
+test_begin(-tests => 33,
            -requires_modules => [qw()],
            -requires_networking => 0);
 
@@ -66,4 +66,26 @@ isa_ok($seqs[0], 'Bio::Seq');
 ok($seqs[0]->seq =~ /^AGCGTCCTGTGCTGGAATGTGCGGCTCCCGCGAGCTCGCGGCGCAGCAGCAGAAGACCGA/ );
 ok($seqs[1]->seq =~ /^GGGGCGGTGATGGCGGCTCCATATTAACACCTCCTCCTCCTCCTCCGCGCTCCCGCCCGC/ );
 
-# check that we've got the exon positions in the place:
+# check that we've got the exon positions in the right place?
+
+my $pos_seq = $seqs[0];
+my $neg_seq = $seqs[1];
+
+# ENSMUST00000080359
+# 1: ENSMUSE00000695626	77,694,516	77,694,813  (len = 298)
+# 2: ENSMUSE00000483844	77,696,957	77,697,848  (len = 892)
+
+# ENSMUST00000073279
+# 1: ENSMUSE00000533409	193,961,621	193,961,892 (len = 272)
+# 2: ENSMUSE00000499716	193,961,315	193,961,371 (len = 57)
+
+# positive strand exon-boundary placement?
+my @feats = $pos_seq->get_SeqFeatures;
+is($feats[0]->start, 298);
+is($feats[1]->start, 1190);
+
+# negative strand exon-boundary placement?
+@feats = $neg_seq->get_SeqFeatures;
+is($feats[0]->start, 272);
+is($feats[1]->start, 329);
+
