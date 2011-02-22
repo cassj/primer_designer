@@ -42,6 +42,7 @@ sub _make_seqs{
 
     #Now we need to add the exon boundaries as features:
     my @exon_lengths = map {$_->length} @$trsc_exons;
+    pop @exon_lengths;  # except the last one
 
     my $pos = 0;
     foreach (@exon_lengths){

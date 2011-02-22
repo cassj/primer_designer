@@ -1,0 +1,25 @@
+---
+abstract: 'Primer design with bells on.'
+author:
+  - 'Cass Johnston <cassjohnston@gmail.com>'
+build_requires:
+  Bio::Root::Test: 0
+  Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons: 0
+  Bio::Tools::Run::Unafold::melt: 0
+configure_requires:
+  ExtUtils::MakeMaker: 6.31
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.102346, CPAN::Meta::Converter version 2.102400'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Buckley-PrimerDesigner
+requires:
+  Bio::Annotation::SimpleValue: 0
+  Bio::Root::Root: 0
+  Bio::Seq: 0
+  Bio::SeqIO: 0
+  Bio::Tools::Run::Primer3Redux: 0
+  Scalar::Util: 0
+version: 0.001
