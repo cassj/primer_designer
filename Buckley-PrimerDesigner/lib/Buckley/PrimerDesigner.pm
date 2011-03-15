@@ -284,8 +284,9 @@ sub design {
   $self->throw("No sequences given") unless scalar(@seqs);
 
   # If we need to, convert the seqs to Bio::Seq objects
-  if (defined $self->seq_fetcher){
-    @seqs = $self->seq_fetcher->(@seqs);
+  my $sf = $self->seq_fetcher;
+  if (defined $sf){
+    @seqs = $self->seq_fetcher->fetch(@seqs);
     $self->throw("No sequences returned by seq_fetcher") unless scalar(@seqs);
   }
 
@@ -303,6 +304,7 @@ sub design {
   }
 
   my @results;
+
   foreach my $seq (@seqs){
 
     #do we have any sequence specific parameters set?
@@ -319,18 +321,24 @@ sub design {
     foreach (@annots){
       my ($val) = $ac->get_Annotations($_);
       $self->throw("Sequence-specific parameter trying to override global Primer3 parameter $_") if defined $self->primer3->$_;
+      $self->warn("Resetting the local value of $_ - this probably means your pre-processes are clobbering each others settings. This may not be what you want") if defined $local_settings{$_};
       $local_settings{$_} = $val->value;
     }
 
     $self->primer3->set_parameters(%local_settings);
 
+    # and run primer3 with these settings.
     my $res_obj = $self->primer3->run($seq);
+
+    # fetch a Bio::Tools::Primer3Redux::Result object
     my $res = $res_obj->next_result;
 
-    #stick the original sequence object back in.
-    $res->attach_seq($seq);
+    # Do we need to add the original seq features here?
+    my $new_seq = $res->get_processed_seq;
+    $new_seq->annotation($seq->annotation);
+    foreach my $feat ($seq->get_SeqFeatures) { $new_seq->add_SeqFeature($_) }
     
-    push @results, $res;
+    push @results, $new_seq;
 
     # reset sequence specific annotations
     foreach (@annots){

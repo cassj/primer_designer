@@ -12,8 +12,8 @@ my %WriteMakefileArgs = (
   'ABSTRACT' => 'Primer design with bells on.',
   'AUTHOR' => 'Cass Johnston <cassjohnston@gmail.com>',
   'BUILD_REQUIRES' => {
+    'Bio::Annotation::Collection' => '0',
     'Bio::Root::Test' => '0',
-    'Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons' => '0',
     'Bio::Tools::Run::Unafold::melt' => '0'
   },
   'CONFIGURE_REQUIRES' => {

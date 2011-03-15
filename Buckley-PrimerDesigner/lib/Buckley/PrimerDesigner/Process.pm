@@ -25,30 +25,15 @@ sub new {
 }
 
 
-=head2 callback
+=head2 process
 
-Should be overridden by subclasses to return a subref to use as a callback
+Should be overridden by subclasses to return a subref to use as a process
 
 =cut
 
-sub callback {
+sub process {
   my $self = shift;
   $self->throw("->callback should be defined by a subclass");
-}
-
-
-=head2 is_filter
-
-Should be overridden by subclasses to return a boolean value indicating
-whether or not this callback is a filter. If false, then PrimerDesign 
-will expect the resulting array of Bio::Seq objects to be the same length
-as the input array.
-
-=cut
-
-sub is_filter{
-  my $self = shift;
-  $self->throw("->is_filter should be defined by a subclass");
 }
 
 

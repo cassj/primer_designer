@@ -4,7 +4,7 @@ use warnings;
 use Bio::Root::Test;
 use Bio::Seq;
 
-test_begin(-tests => 24);
+test_begin(-tests => 25);
 my $debug = test_debug();
 
 use_ok('Buckley::PrimerDesigner');
@@ -37,8 +37,11 @@ $seq2 = Bio::Seq->new( -seq => $seq2,
 		       -id  => 'seq_2'
 		     );
 
-ok(my @res = $pd->design($seq1, $seq2));
-isa_ok($res[0], 'Bio::Tools::Primer3Redux::Result');
+ok(my @res = $pd->design($seq1));
+ok(@res = $pd->design($seq1, $seq2));
+
+# Design returns the sequences, annotated with primers.
+isa_ok($res[0], 'Bio::Seq');
 
 
 # Now try with some reasonable parameter settings. 
@@ -72,7 +75,7 @@ my %dc_params = (
 
 $pd->primer3->set_parameters( %dc_params );
 ok(@res = $pd->design($seq1));
-isa_ok($res[0], 'Bio::Tools::Primer3Redux::Result');
+isa_ok($res[0], 'Bio::Seq');
 
 
 
@@ -95,45 +98,68 @@ $pd->register_pre_process(name      => "pp",
 			  is_filter => 0 );
 
 ok(@res = $pd->design($seq1));
-isa_ok($res[0], 'Bio::Tools::Primer3Redux::Result');
+isa_ok($res[0], 'Bio::Seq');
 
 
-# we should try a filter here too.
+# does the seq we get back retain its annotations?
+my $ac = $res[0]->annotation;
+my @annots = $ac->get_Annotations('SEQUENCE_TARGET');
+isa_ok($annots[0], 'Buckley::Annotation::Parameter::Primer3');
+
+
 
 
 # Do post-processes work...?
 
+
+# A sub that runs melt.pl on all each of the primers and amplicons
 use Bio::Tools::Run::Unafold::melt;
+use Bio::Annotation::Collection;
+use Buckley::Annotation::Result::Unafold;
 
-# A sub that runs melt.pl on all each of the primers and discards any
-# with a higher value than x
+
 my $x = 40;
-my $folder = Bio::Tools::Run::Unafold::melt->new();
 
+my $folder = Bio::Tools::Run::Unafold::melt->new();
 $folder->NA('DNA');
 $folder->temperature('37');
 
+# post-processes need to operate on a Bio::Seq annotated
+# with PrimerPairs
 my $postp = sub {
   my $p3_res = shift;
 
-  # The rewind function doesn't appear to work, so
-  # if we use teh iterator once, all our data's gone.
-  # So kludge for now. Need to find out how this is supposed to work.
-  my $n_primers = $p3_res->num_primer_pairs;
-  foreach (keys %{$p3_res->{feature_data}}){
-    my $this =  $p3_res->{feature_data}->{$_};
-    my $lp = $this->{LEFT};
-    my $rp = $this->{RIGHT};
-    my $seq =  Bio::PrimarySeq->new ( -seq => $lp->{sequence} );
-    my $lp_fold = $folder->run($seq );
-    $lp->{melt_Tm} = $lp_fold->{Tm};
-    $seq =  Bio::PrimarySeq->new ( -seq => $rp->{sequence} );
+  my @primer_pairs =  grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} $p3_res->get_SeqFeatures;
+  foreach my $pair (@primer_pairs){
+
+    my ($fp, $rp) = ($pair->forward_primer, $pair->reverse_primer);
+
+    my $seq = $pair->seq;
+    my $amp_fold = $folder->run( $seq );
+    my $ac = $pair->annotation() || Bio::Annotation::Collection->new();
+    my $param = Buckley::Annotation::Result::Unafold->new(-value =>  $amp_fold->{Tm});
+    $ac->add_Annotation('Tm', $param);
+    $pair->annotation($ac);
+
+    $seq =  $fp->seq;
+    my $fp_fold = $folder->run( $seq );
+    $ac = $fp->annotation() || Bio::Annotation::Collection->new();
+    $param = Buckley::Annotation::Result::Unafold->new(-value =>  $fp_fold->{Tm});
+    $ac->add_Annotation('Tm', $param);
+    $fp->annotation($ac);
+
+    $seq =  $rp->seq;
     my $rp_fold = $folder->run($seq);
-    $rp->{melt_Tm} = $rp_fold->{Tm};
-  }
+    $ac = $rp->annotation() || Bio::Annotation::Collection->new();
+    $param = Buckley::Annotation::Result::Unafold->new(-value =>  $rp_fold->{Tm});
+    $ac->add_Annotation('Tm', $param);
+    $rp->annotation($ac);
+   }
 
   return $p3_res;
 };
+
+
 
 $pd = Buckley::PrimerDesigner->new(-verbose => $debug);
 $pd->primer3->set_parameters( %dc_params );
@@ -143,34 +169,33 @@ $pd->register_post_process(name      => "postp",
 			   is_filter => 0 );
 
 ok(@res = $pd->design($seq1));
-isa_ok($res[0], 'Bio::Tools::Primer3Redux::Result');
+isa_ok($res[0], 'Bio::Seq');
 
-my $pair = $res[0]->next_primer_pair;
-isa_ok($pair, 'Bio::Tools::Primer3Redux::PrimerPair');
-
-my $fwd = $pair->forward_primer();
-isa_ok($fwd, 'Bio::Tools::Primer3Redux::Primer');
-
-ok($fwd->get_tag_values('melt_Tm'));
+my ($pair) = grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} $res[0]->get_SeqFeatures;
+ok(my ($annot) = $pair->annotation()->get_Annotations("Tm"));
+isa_ok($annot, 'Buckley::Annotation::Result::Unafold');
 
 
-
-# Can we call the same things from a class?
-
-# What about seq fetchers?
-my $sf = sub {
+# Fake a SeqFetcher
+{ no warnings;
+ @Bio::SeqFetcher::Test::ISA = 'Bio::SeqFetcher';
+ *Bio::SeqFetcher::Test::new = sub{return bless {}, shift};
+ *Bio::SeqFetcher::Test::fetch = sub {
+  my $self = shift;
   my @seqs = @_;
   #just submit the same sequence twice for now.
   @seqs = (@seqs, @seqs);
-  return @seqs;  
+  return @seqs;
 };
+}
 
+my $sf = Bio::SeqFetcher::Test->new();
 $pd = Buckley::PrimerDesigner->new(-verbose => $debug);
 $pd->primer3->set_parameters( %dc_params );
-$pd->seq_fetcher($sf);
+$pd->seq_fetcher($sf); 
 
 
 ok(@res = $pd->design($seq1));
-isa_ok($res[0], 'Bio::Tools::Primer3Redux::Result');
-isa_ok($res[1], 'Bio::Tools::Primer3Redux::Result');
+isa_ok($res[0], 'Bio::Seq');
+isa_ok($res[1], 'Bio::Seq');
 

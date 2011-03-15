@@ -39,16 +39,9 @@ And elsewhere:
 
 Constructor
 
-=head2 callback
+=head2 process
 
-Should be overridden by subclasses to return a subref to use as a callback
-
-=head2 is_filter
-
-Should be overridden by subclasses to return a boolean value indicating
-whether or not this callback is a filter. If false, then PrimerDesign 
-will expect the resulting array of Bio::Seq objects to be the same length
-as the input array.
+Should be overridden by subclasses to return a subref to use as a process
 
 =head1 AUTHOR
 

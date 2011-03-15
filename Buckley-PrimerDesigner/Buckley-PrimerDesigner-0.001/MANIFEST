@@ -1,3 +1,4 @@
+02.t
 LICENSE
 MANIFEST
 META.yml
@@ -6,6 +7,9 @@ README
 dist.ini
 dist.ini~
 lib/Buckley/Annotation/Parameter/Primer3.pm
+lib/Buckley/Annotation/Result/Unafold.pm
+lib/Buckley/Annotation/Result/Unafold.pm~
+lib/Buckley/Annotation/UnafoldMeltTm.pm~
 lib/Buckley/PrimerDesigner.pm
 lib/Buckley/PrimerDesigner.pm~
 lib/Buckley/PrimerDesigner/PostProcess.pm
@@ -21,5 +25,3 @@ lib/Buckley/PrimerDesigner/Result.pm~
 t/#01.t#
 t/01.t
 t/01.t~
-t/02.t
-t/02.t~

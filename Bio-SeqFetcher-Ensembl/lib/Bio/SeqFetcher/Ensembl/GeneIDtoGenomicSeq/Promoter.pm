@@ -2,6 +2,8 @@
 package Bio::SeqFetcher::Ensembl::GeneIDtoGenomicSeq::Promoter;
 use base 'Bio::SeqFetcher::Ensembl::GeneIDtoGenomicSeq';
 
+use Bio::SeqFeature::Generic;
+
 =head1 NAME
 
 Bio::SeqFetcher::Ensembl::GeneIDtoGenomicSeq::Promoter - sequence fetcher for ensembl gene id to promoter sequence
@@ -92,21 +94,30 @@ sub _make_seqs{
      if ($strand == 1 ) {
        $start = $_->start;
        $end = $_->start;
-       
        $start = $start - $self->_upstream;
        $end = $end + $self->_downstream;
      }else{
        $start = $_->end;
        $end   = $_->end;
-       
        $start = $start -$self->_downstream;
        $end   = $end + $self->_upstream;
+       
      }
       
 
      my $slice = $self->_slice_adap->fetch_by_region('chromosome', $chr, $start, $end, $strand);
-     my $seq = Bio::Seq->new(-seq => $slice->seq,
-                             -id       => $id);
+     my $seq = Bio::Seq->new(-seq  => $slice->seq,
+                             -id   => $id);
+     
+     # add a seqfeature for the tss posisition.
+     @Bio::SeqFeature::TSS::ISA = 'Bio::SeqFeature::Generic';
+     my $feat = Bio::SeqFeature::TSS->new(
+					  '-start'  => $self->_upstream,
+					  '-end'    => $self->_upstream,
+					  '-strand' => 1, # everything should be in transcript direction now.
+					  '-display_name' => 'TSS'
+					 );
+     $seq->add_SeqFeature($feat);
      push @seqs, $seq;
   }
   return @seqs;

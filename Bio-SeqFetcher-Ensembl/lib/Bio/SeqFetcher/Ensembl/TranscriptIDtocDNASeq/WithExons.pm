@@ -24,12 +24,13 @@ sub _make_seqs{
     my $trsc_exons = $trsc->get_all_Exons;
     my $seq;
 
+    my $id = $trsc->stable_id;
     foreach my $exon (@$trsc_exons){
       my $strand = $exon->strand;
       my $chr = $exon->slice->seq_region_name;
       my $start = $exon->start;
       my $end = $exon->end;
-      my $id = $exon->stable_id;
+      my $exon_id = $exon->stable_id;
 
       #fetch the transcript sequence
       my $slice = $self->_slice_adap->fetch_by_region('chromosome', $chr, $start, $end, $strand);

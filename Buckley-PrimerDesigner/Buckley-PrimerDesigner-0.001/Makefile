@@ -17,7 +17,7 @@
 #     EXE_FILES => []
 #     LICENSE => q[perl]
 #     NAME => q[Buckley::PrimerDesigner]
-#     PREREQ_PM => { Bio::Tools::Run::Unafold::melt=>q[0], Scalar::Util=>q[0], Bio::Root::Root=>q[0], Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons=>q[0], Bio::Root::Test=>q[0], Bio::Tools::Run::Primer3Redux=>q[0], Bio::Annotation::SimpleValue=>q[0], Bio::SeqIO=>q[0], Bio::Seq=>q[0] }
+#     PREREQ_PM => { Bio::Tools::Run::Unafold::melt=>q[0], Scalar::Util=>q[0], Bio::Root::Root=>q[0], Bio::Root::Test=>q[0], Bio::Tools::Run::Primer3Redux=>q[0], Bio::Annotation::SimpleValue=>q[0], Bio::SeqIO=>q[0], Bio::Seq=>q[0], Bio::Annotation::Collection=>q[0] }
 #     VERSION => q[0.001]
 #     test => { TESTS=>q[t/*.t] }
 
@@ -163,6 +163,7 @@ O_FILES  =
 H_FILES  = 
 MAN1PODS = 
 MAN3PODS = lib/Buckley/Annotation/Parameter/Primer3.pm \
+	lib/Buckley/Annotation/Result/Unafold.pm \
 	lib/Buckley/PrimerDesigner.pm \
 	lib/Buckley/PrimerDesigner/PostProcess.pm \
 	lib/Buckley/PrimerDesigner/PreProcess.pm \
@@ -191,6 +192,7 @@ PERL_ARCHIVE_AFTER =
 
 
 TO_INST_PM = lib/Buckley/Annotation/Parameter/Primer3.pm \
+	lib/Buckley/Annotation/Result/Unafold.pm \
 	lib/Buckley/PrimerDesigner.pm \
 	lib/Buckley/PrimerDesigner/PostProcess.pm \
 	lib/Buckley/PrimerDesigner/PreProcess.pm \
@@ -200,18 +202,20 @@ TO_INST_PM = lib/Buckley/Annotation/Parameter/Primer3.pm \
 
 PM_TO_BLIB = lib/Buckley/PrimerDesigner.pm \
 	blib/lib/Buckley/PrimerDesigner.pm \
-	lib/Buckley/PrimerDesigner/Result.pm \
-	blib/lib/Buckley/PrimerDesigner/Result.pm \
-	lib/Buckley/PrimerDesigner/Process.pm \
-	blib/lib/Buckley/PrimerDesigner/Process.pm \
 	lib/Buckley/PrimerDesigner/PreProcess/OverlapExonBoundaries.pm \
 	blib/lib/Buckley/PrimerDesigner/PreProcess/OverlapExonBoundaries.pm \
 	lib/Buckley/PrimerDesigner/PreProcess.pm \
 	blib/lib/Buckley/PrimerDesigner/PreProcess.pm \
-	lib/Buckley/Annotation/Parameter/Primer3.pm \
-	blib/lib/Buckley/Annotation/Parameter/Primer3.pm \
+	lib/Buckley/Annotation/Result/Unafold.pm \
+	blib/lib/Buckley/Annotation/Result/Unafold.pm \
 	lib/Buckley/PrimerDesigner/PostProcess.pm \
-	blib/lib/Buckley/PrimerDesigner/PostProcess.pm
+	blib/lib/Buckley/PrimerDesigner/PostProcess.pm \
+	lib/Buckley/PrimerDesigner/Process.pm \
+	blib/lib/Buckley/PrimerDesigner/Process.pm \
+	lib/Buckley/PrimerDesigner/Result.pm \
+	blib/lib/Buckley/PrimerDesigner/Result.pm \
+	lib/Buckley/Annotation/Parameter/Primer3.pm \
+	blib/lib/Buckley/Annotation/Parameter/Primer3.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -434,20 +438,22 @@ POD2MAN = $(POD2MAN_EXE)
 
 manifypods : pure_all  \
 	lib/Buckley/PrimerDesigner.pm \
-	lib/Buckley/PrimerDesigner/Result.pm \
-	lib/Buckley/PrimerDesigner/Process.pm \
 	lib/Buckley/PrimerDesigner/PreProcess/OverlapExonBoundaries.pm \
 	lib/Buckley/PrimerDesigner/PreProcess.pm \
-	lib/Buckley/Annotation/Parameter/Primer3.pm \
-	lib/Buckley/PrimerDesigner/PostProcess.pm
+	lib/Buckley/Annotation/Result/Unafold.pm \
+	lib/Buckley/PrimerDesigner/PostProcess.pm \
+	lib/Buckley/PrimerDesigner/Process.pm \
+	lib/Buckley/PrimerDesigner/Result.pm \
+	lib/Buckley/Annotation/Parameter/Primer3.pm
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) \
 	  lib/Buckley/PrimerDesigner.pm $(INST_MAN3DIR)/Buckley::PrimerDesigner.$(MAN3EXT) \
-	  lib/Buckley/PrimerDesigner/Result.pm $(INST_MAN3DIR)/Buckley::PrimerDesigner::Result.$(MAN3EXT) \
-	  lib/Buckley/PrimerDesigner/Process.pm $(INST_MAN3DIR)/Buckley::PrimerDesigner::Process.$(MAN3EXT) \
 	  lib/Buckley/PrimerDesigner/PreProcess/OverlapExonBoundaries.pm $(INST_MAN3DIR)/Buckley::PrimerDesigner::PreProcess::OverlapExonBoundaries.$(MAN3EXT) \
 	  lib/Buckley/PrimerDesigner/PreProcess.pm $(INST_MAN3DIR)/Buckley::PrimerDesigner::PreProcess.$(MAN3EXT) \
-	  lib/Buckley/Annotation/Parameter/Primer3.pm $(INST_MAN3DIR)/Buckley::Annotation::Parameter::Primer3.$(MAN3EXT) \
-	  lib/Buckley/PrimerDesigner/PostProcess.pm $(INST_MAN3DIR)/Buckley::PrimerDesigner::PostProcess.$(MAN3EXT) 
+	  lib/Buckley/Annotation/Result/Unafold.pm $(INST_MAN3DIR)/Buckley::Annotation::Result::Unafold.$(MAN3EXT) \
+	  lib/Buckley/PrimerDesigner/PostProcess.pm $(INST_MAN3DIR)/Buckley::PrimerDesigner::PostProcess.$(MAN3EXT) \
+	  lib/Buckley/PrimerDesigner/Process.pm $(INST_MAN3DIR)/Buckley::PrimerDesigner::Process.$(MAN3EXT) \
+	  lib/Buckley/PrimerDesigner/Result.pm $(INST_MAN3DIR)/Buckley::PrimerDesigner::Result.$(MAN3EXT) \
+	  lib/Buckley/Annotation/Parameter/Primer3.pm $(INST_MAN3DIR)/Buckley::Annotation::Parameter::Primer3.$(MAN3EXT) 
 
 
 
@@ -524,11 +530,11 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) 'build_requires:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    ExtUtils::MakeMaker:  0' >> META_new.yml
 	$(NOECHO) $(ECHO) 'requires:' >> META_new.yml
+	$(NOECHO) $(ECHO) '    Bio::Annotation::Collection:  0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Bio::Annotation::SimpleValue:  0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Bio::Root::Root:      0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Bio::Root::Test:      0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Bio::Seq:             0' >> META_new.yml
-	$(NOECHO) $(ECHO) '    Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons:  0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Bio::SeqIO:           0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Bio::Tools::Run::Primer3Redux:  0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Bio::Tools::Run::Unafold::melt:  0' >> META_new.yml
@@ -835,11 +841,11 @@ ppd :
 	$(NOECHO) $(ECHO) '    <ABSTRACT>Primer design with bells on.</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Cass Johnston &lt;cassjohnston@gmail.com&gt;</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::Annotation::Collection" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::Annotation::SimpleValue" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::Root::Root" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::Root::Test" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::Seq" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::SeqIO" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::Tools::Run::Primer3Redux" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::Tools::Run::Unafold::melt" />' >> $(DISTNAME).ppd
@@ -855,12 +861,13 @@ ppd :
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  lib/Buckley/PrimerDesigner.pm blib/lib/Buckley/PrimerDesigner.pm \
-	  lib/Buckley/PrimerDesigner/Result.pm blib/lib/Buckley/PrimerDesigner/Result.pm \
-	  lib/Buckley/PrimerDesigner/Process.pm blib/lib/Buckley/PrimerDesigner/Process.pm \
 	  lib/Buckley/PrimerDesigner/PreProcess/OverlapExonBoundaries.pm blib/lib/Buckley/PrimerDesigner/PreProcess/OverlapExonBoundaries.pm \
 	  lib/Buckley/PrimerDesigner/PreProcess.pm blib/lib/Buckley/PrimerDesigner/PreProcess.pm \
-	  lib/Buckley/Annotation/Parameter/Primer3.pm blib/lib/Buckley/Annotation/Parameter/Primer3.pm \
-	  lib/Buckley/PrimerDesigner/PostProcess.pm blib/lib/Buckley/PrimerDesigner/PostProcess.pm 
+	  lib/Buckley/Annotation/Result/Unafold.pm blib/lib/Buckley/Annotation/Result/Unafold.pm \
+	  lib/Buckley/PrimerDesigner/PostProcess.pm blib/lib/Buckley/PrimerDesigner/PostProcess.pm \
+	  lib/Buckley/PrimerDesigner/Process.pm blib/lib/Buckley/PrimerDesigner/Process.pm \
+	  lib/Buckley/PrimerDesigner/Result.pm blib/lib/Buckley/PrimerDesigner/Result.pm \
+	  lib/Buckley/Annotation/Parameter/Primer3.pm blib/lib/Buckley/Annotation/Parameter/Primer3.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

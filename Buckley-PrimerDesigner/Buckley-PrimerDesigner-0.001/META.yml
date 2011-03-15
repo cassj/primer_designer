@@ -3,8 +3,8 @@ abstract: 'Primer design with bells on.'
 author:
   - 'Cass Johnston <cassjohnston@gmail.com>'
 build_requires:
+  Bio::Annotation::Collection: 0
   Bio::Root::Test: 0
-  Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons: 0
   Bio::Tools::Run::Unafold::melt: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.31

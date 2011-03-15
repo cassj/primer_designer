@@ -102,7 +102,7 @@ sub _make_seqs{
      my $id = $_->stable_id;
      my $slice = $self->_slice_adap->fetch_by_region('chromosome', $chr, $start, $end, $strand);
      my $seq = Bio::Seq->new(-seq => $slice->seq,
-  	                     -id       => $id);
+  	                     -id  => $id);
    
      push @seqs, $seq;
   }

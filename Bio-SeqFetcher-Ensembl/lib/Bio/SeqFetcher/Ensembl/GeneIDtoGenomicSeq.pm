@@ -74,7 +74,7 @@ sub fetch {
 
 
 =head2 _get_genes
-  
+
   Internal use.
   Fetches Ensembl Gene objects by Ensemble Gene ID. 
 
