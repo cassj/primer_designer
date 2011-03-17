@@ -8,6 +8,13 @@ BEGIN {
 use base 'Buckley::PrimerDesigner::Process';
 
 
+sub description{
+  return "Base class for PrimerDesigner Pre-Processes. Do not use directly";
+}
+
+
+
+
 1;
 
 __END__
@@ -26,9 +33,8 @@ version 0.001
   package Buckley::PrimerDesigner::PreProcess::DoSomething;
 
   {
-    my $callback = sub{my $bioseq = shift; ... do some stuff ... return $bioseq || undef;}
-    sub callback{ return $callback; }
-    sub is_filter(return 0);
+    my $process = sub{my $bioseq = shift; ... do some stuff ... return $bioseq || undef;}
+    sub process{ return $process; }
   }
 
   1;
@@ -37,7 +43,7 @@ And elsewhere:
 
   my $pd = Buckley::PrimerDesigner->new();
   my $pre_proc = Buckley::PrimerDesigner::PreProcess:DoSomething->new();  #blessed subref.
-  $pd->register_pre_process(name=>'do_stuff', subref=>$pre_proc->callback, description=>"a thing which does stuff");
+  $pd->register_pre_process(name=>'do_stuff', subref=>$pre_proc->process, description=>"a thing which does stuff");
   my $PDres = $pd->design(@seqs);
 
 =head1 DESCRIPTION
@@ -48,7 +54,7 @@ be able to find it.
 
 =head1 NAME
 
-Buckley::PrimerDesigner::PreProcess - Base class for PreProcesses in PrimerDesigner
+Buckley::PrimerDesigner::PreProcess -  Base class for PreProcesses in PrimerDesigner
 
 =head1 METHODS - from L<Buckley::PrimerDesigner::Process>
 
@@ -56,16 +62,11 @@ Buckley::PrimerDesigner::PreProcess - Base class for PreProcesses in PrimerDesig
 
 Constructor
 
-=head2 callback
+=head2 process
 
-Should be overridden by subclasses to return a subref to use as a callback
+Should be overridden by subclasses to return a subref to use as a process
 
-=head2 is_filter
-
-Should be overridden by subclasses to return a boolean value indicating
-whether or not this callback is a filter. If false, then PrimerDesign 
-will expect the resulting array of Bio::Seq objects to be the same length
-as the input array.
+=head2 description
 
 =head1 AUTHOR
 

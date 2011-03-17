@@ -36,6 +36,13 @@ sub process {
   $self->throw("->callback should be defined by a subclass");
 }
 
+=head2 description
+
+=cut
+
+sub description{
+  return "Base class for PrimerDesigner Processes. Do not use directly";
+}
 
 =head1 AUTHOR
 

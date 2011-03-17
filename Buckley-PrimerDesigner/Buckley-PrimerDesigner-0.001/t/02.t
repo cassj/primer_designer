@@ -16,16 +16,12 @@ require_ok('Buckley::PrimerDesigner::PreProcess');
 use_ok('Buckley::PrimerDesigner::PostProcess');
 require_ok('Buckley::PrimerDesigner::PostProcess');
 
-ok(my $pre = Buckley::PrimerDesigner::PreProcess->new);
-ok(my $post = Buckley::PrimerDesigner::PostProcess->new);
+ok(my $pre = Buckley::PrimerDesigner::PreProcess->new, 'pre process instantiation');
+ok(my $post = Buckley::PrimerDesigner::PostProcess->new, 'post process instantiation');
 
-
-# base classes just cry if you try and use them for anything
-throws_ok {$pre->callback} 'Bio::Root::Exception', 'should be defined by a subclass';
-throws_ok {$pre->is_filter} 'Bio::Root::Exception', 'should be defined by a subclass';
-
-throws_ok {$post->callback} 'Bio::Root::Exception', 'should be defined by a subclass';
-throws_ok {$post->is_filter} 'Bio::Root::Exception', 'should be defined by a subclass';
+## base classes just cry if you try and use them for anything
+throws_ok {$pre->process} 'Bio::Root::Exception', 'should be defined by a subclass';
+throws_ok {$post->process} 'Bio::Root::Exception', 'should be defined by a subclass';
 
 
 ## test the OverlapExonBoundaries PreProcess, need to use a SeqFetcher that annotates exons:
@@ -33,14 +29,6 @@ use Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons;
 my $sf = Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons->new( -species => "mouse");
 my ($seq) = $sf->fetch('ENSMUST00000072119');
 
-use_ok('Buckley::PrimerDesigner::PreProcess::OverlapExonBoundaries');
-$pre = Buckley::PrimerDesigner::PreProcess::OverlapExonBoundaries->new();
-my $new_seq  = $pre->callback->($seq);
-
-my $anno_col = $new_seq->annotation;
-my ($test) =  $anno_col->get_Annotations('SEQUENCE_TARGET');
-
-is($test->value, '189,1 360,1 522,1 705,1 864,1 1101,1 1242,1 1353,1');
 
 
 # and let's just check the parameter is actually being used.
@@ -51,7 +39,7 @@ my %params = (
 	      PRIMER_TASK                       => 'pick_detection_primers',
 	      PRIMER_PICK_LEFT_PRIMER           => 1,
 	      PRIMER_PICK_RIGHT_PRIMER          => 1,
-	      PRIMER_NUM_RETURN                 => 5,
+	      PRIMER_NUM_RETURN                 => 20,
 	      PRIMER_PRODUCT_SIZE_RANGE         => "100-1000",
 	      PRIMER_MIN_SIZE                   => 18,
 	      PRIMER_OPT_SIZE                   => 20,
@@ -73,34 +61,28 @@ my %params = (
 	     );
 $pd->primer3->set_parameters( %params );
 
+use_ok('Buckley::PrimerDesigner::PreProcess::OverlapExonBoundaries');
+$pre = Buckley::PrimerDesigner::PreProcess::OverlapExonBoundaries->new();
 $pd->register_pre_process( name      => "overlap_exons",
-			   subref    => $pre->callback,
+			   subref    => $pre->process,
 			   is_filter => 0 );
 
-
-my @res = $pd->design($seq); 
-
-
-isa_ok($res[0], 'Bio::Tools::Primer3Redux::Result');
-
-my $pair = $res[0]->next_primer_pair;
-isa_ok($pair, 'Bio::Tools::Primer3Redux::PrimerPair');
-
-my ($fp, $rp) = ($pair->forward_primer, $pair->reverse_primer);
-
-#should still test that this is actually flanking an exon, I guess.
-#use Data::Dumper;
-#warn Dumper $res[0];
+ok(my @res = $pd->design($seq));
+isa_ok($res[0], 'Bio::Seq');
 
 
+# Should still have Bio::SeqFeature::ExonBoundary features
+my @sfs = $res[0]->get_SeqFeatures;
+@sfs = grep {$_->isa('Bio::SeqFeature::ExonBoundary')} @sfs;
+ok(scalar @sfs, "Exon boundary features retained");
 
+my $ac = $res[0]->annotation;
+my @ks = $ac->get_all_annotation_keys;
+my @annots = map {$ac->get_Annotations($_)} @ks;
+@annots = grep {$_->isa('Buckley::Annotation::Parameter::Primer3')} @annots;
+is(scalar @annots, 1, "Primer3 Annotations added");
 
-
-
-
-
-
-
+is($annots[0]->value, '189,1 360,1 522,1 705,1 864,1 1101,1 1242,1 1353,1', 'Exon Boundary Primer 3 param set correctly');
 
 
 

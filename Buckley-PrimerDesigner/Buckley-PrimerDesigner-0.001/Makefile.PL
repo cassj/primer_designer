@@ -12,9 +12,8 @@ my %WriteMakefileArgs = (
   'ABSTRACT' => 'Primer design with bells on.',
   'AUTHOR' => 'Cass Johnston <cassjohnston@gmail.com>',
   'BUILD_REQUIRES' => {
-    'Bio::Annotation::Collection' => '0',
     'Bio::Root::Test' => '0',
-    'Bio::Tools::Run::Unafold::melt' => '0'
+    'Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons' => '0'
   },
   'CONFIGURE_REQUIRES' => {
     'ExtUtils::MakeMaker' => '6.31'
@@ -24,11 +23,13 @@ my %WriteMakefileArgs = (
   'LICENSE' => 'perl',
   'NAME' => 'Buckley::PrimerDesigner',
   'PREREQ_PM' => {
+    'Bio::Annotation::Collection' => '0',
     'Bio::Annotation::SimpleValue' => '0',
     'Bio::Root::Root' => '0',
     'Bio::Seq' => '0',
     'Bio::SeqIO' => '0',
     'Bio::Tools::Run::Primer3Redux' => '0',
+    'Bio::Tools::Run::Unafold::melt' => '0',
     'Scalar::Util' => '0'
   },
   'VERSION' => '0.001',

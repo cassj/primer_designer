@@ -4,6 +4,13 @@ use base 'Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq';
 
 use Bio::SeqFeature::Generic;
 
+=head2 description
+
+=cut
+sub description{
+  return "Returns cDNA sequence, with exon boundaries marked as Bio::SeqFeature::ExonBoundary SeqFeatures, given an Ensembl Transcript ID";
+}
+
 
 =head2 _make_seqs
 

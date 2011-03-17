@@ -60,6 +60,7 @@ sub new {
   return $self;
 }
 
+
 sub _upstream{
   my $self = shift;
   return $self->{_upstream};
@@ -70,6 +71,15 @@ sub _downstream{
   return $self->{_downstream};
 }
 
+
+=head2 description
+
+Returns a string describing the seqfetcher
+
+=cut
+sub description{
+  return "Fetches genome sequence around Ensembl-defined gene promoter, given Ensembl GeneID and distance up- and down-stream";
+}
 
 =head2 _make_seqs
 

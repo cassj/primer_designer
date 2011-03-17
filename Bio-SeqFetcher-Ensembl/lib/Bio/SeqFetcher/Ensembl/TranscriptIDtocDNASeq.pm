@@ -51,6 +51,15 @@ sub new {
   return $self;
 }
 
+=head2 description
+
+Returns a string description of the seqfetcher.
+
+=cut
+sub description{
+return "Returns Ensembl cDNA sequence given an Ensembl Transcript ID";
+}
+
 =head2 fetch
   
   Title    : fetch

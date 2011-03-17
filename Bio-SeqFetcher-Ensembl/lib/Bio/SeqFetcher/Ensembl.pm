@@ -132,6 +132,15 @@ sub new {
   return $self;
 }
 
+=head2 description
+
+Returns a string describing the function of this fetcher
+
+=cut
+
+sub description{
+  return "Base class for Ensembl SeqFetchers, do not instantiate directly";
+}
 
 =head2 _registry
 

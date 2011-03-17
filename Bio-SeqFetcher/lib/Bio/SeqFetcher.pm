@@ -90,6 +90,13 @@ sub fetch{
 }
 
 
+=head2 description
+
+=cut
+sub description{
+  return "Abstract base class. Do not instantiate directly - use subclasses.";
+}
+
 =head1 FEEDBACK
 
 =head2 Mailing Lists

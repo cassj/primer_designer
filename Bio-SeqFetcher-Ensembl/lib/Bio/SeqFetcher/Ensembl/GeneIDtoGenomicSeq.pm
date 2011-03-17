@@ -54,6 +54,15 @@ sub new {
   return $self;
 }
 
+=head2 description
+  
+returns a string containing a description of this seqfeature
+
+=cut
+sub description {
+  return "Fetches genomic sequence of an Ensembl Gene, given an Ensembl Gene ID";
+}
+
 =head2 fetch
   
   Title    : fetch

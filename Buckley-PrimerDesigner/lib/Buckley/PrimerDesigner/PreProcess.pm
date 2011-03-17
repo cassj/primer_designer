@@ -45,11 +45,20 @@ Constructor
 
 Should be overridden by subclasses to return a subref to use as a process
 
+=head2 description
+
+=cut
+
+sub description{
+  return "Base class for PrimerDesigner Pre-Processes. Do not use directly";
+}
 
 =head1 AUTHOR
 
 Cass Johnston <cassjohnston@gmail.com>
 
 =cut
+
+
 
 1;

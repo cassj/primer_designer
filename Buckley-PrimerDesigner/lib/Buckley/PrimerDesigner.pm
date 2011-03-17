@@ -295,16 +295,12 @@ sub design {
   if (defined $self->registered_pre_processes){
     foreach my $proc_name (@{$self->registered_pre_processes}){
       my $proc = $self->{_pre_process}->{$proc_name}->{subref};
-      if ($self->{_pre_process}->{$proc_name}->{is_filter} ){
-	@seqs = grep { &$proc($_) } @seqs;
-      }else{
-	@seqs = map { &$proc($_) } @seqs;
-      }
+      @seqs = map { &$proc($_) } @seqs;
+      $self->throw("No sequences returned by pre-process $proc_name") unless scalar(@seqs);
     }
   }
 
   my @results;
-
   foreach my $seq (@seqs){
 
     #do we have any sequence specific parameters set?
@@ -325,6 +321,7 @@ sub design {
       $local_settings{$_} = $val->value;
     }
 
+
     $self->primer3->set_parameters(%local_settings);
 
     # and run primer3 with these settings.
@@ -336,8 +333,8 @@ sub design {
     # Do we need to add the original seq features here?
     my $new_seq = $res->get_processed_seq;
     $new_seq->annotation($seq->annotation);
-    foreach my $feat ($seq->get_SeqFeatures) { $new_seq->add_SeqFeature($_) }
-    
+    $new_seq->add_SeqFeature($seq->get_SeqFeatures);
+
     push @results, $new_seq;
 
     # reset sequence specific annotations
@@ -351,11 +348,7 @@ sub design {
   if (defined $self->registered_post_processes){
     foreach my $proc_name (@{$self->registered_post_processes}){
       my $proc = $self->{_post_process}->{$proc_name}->{subref};
-      if ($self->{_post_process}->{$proc_name}->{is_filter} ){
-	@results = grep { &$proc($_) } @results;
-      }else{
-	@results = map { &$proc($_) } @results;
-      }
+      @results = map { &$proc($_) } @results;
     }
 
   }
