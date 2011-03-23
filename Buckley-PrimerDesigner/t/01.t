@@ -4,7 +4,7 @@ use warnings;
 use Bio::Root::Test;
 use Bio::Seq;
 
-test_begin(-tests => 25);
+test_begin(-tests => 23);
 my $debug = test_debug();
 
 use_ok('Buckley::PrimerDesigner');
@@ -85,18 +85,25 @@ isa_ok($res[0], 'Bio::Seq');
 
 use Buckley::Annotation::Parameter::Primer3;
 
-# A sub that adds a SEQUENCE_TARGET that primer pairs must flank.
-my $pp = sub {
-  my $seq = shift;
-  my $param = Buckley::Annotation::Parameter::Primer3->new(-value => '100,10');  # format is <start>,<len> <start><len>
-  $seq->annotation->add_Annotation('SEQUENCE_TARGET', $param);
-  return $seq;
-};
+# Mock up a Pre-Process:
+use Buckley::PrimerDesigner::PreProcess;
+{
+  no warnings;
+  @Buckley::PrimerDesigner::PreProcess::Test::ISA = 'Buckley::PrimerDesigner::PreProcess';
+  *Buckley::PrimerDesigner::PreProcess::Test::new = sub{bless {}, shift};
+  # A sub that adds a SEQUENCE_TARGET that primer pairs must flank.
+  *Buckley::PrimerDesigner::PreProcess::Test::process =
+    sub {
+      my $self = shift;
+      my $seq = shift;
+      my $param = Buckley::Annotation::Parameter::Primer3->new(-value => '100,10');  # format is <start>,<len> <start><len>
+      $seq->annotation->add_Annotation('SEQUENCE_TARGET', $param);
+      return $seq;
+    };
+}
+my $pp = Buckley::PrimerDesigner::PreProcess::Test->new();
 
-$pd->register_pre_process(name      => "pp",
-			  subref    => $pp,
-			  is_filter => 0 );
-
+$pd->register_pre_process($pp);
 ok(@res = $pd->design($seq1));
 isa_ok($res[0], 'Bio::Seq');
 
@@ -112,68 +119,63 @@ isa_ok($annots[0], 'Buckley::Annotation::Parameter::Primer3');
 # Do post-processes work...?
 
 
-# A sub that runs melt.pl on all each of the primers and amplicons
+# Mock up a Pre-Process:
+use Buckley::PrimerDesigner::PostProcess;
 use Bio::Tools::Run::Unafold::melt;
 use Bio::Annotation::Collection;
 use Buckley::Annotation::Result::Unafold;
 
+{
+  no warnings;
+  @Buckley::PrimerDesigner::PostProcess::Test::ISA = 'Buckley::PrimerDesigner::PostProcess';
+  *Buckley::PrimerDesigner::PostProcess::Test::new = sub{bless {}, shift};
+  # A sub that runs melt.pl on all each of the primers and amplicons
+  *Buckley::PrimerDesigner::PostProcess::Test::process = sub {
+    my ($self, $p3_res) = @_;
 
-my $x = 40;
+    my $x = 40;
+    my $folder = Bio::Tools::Run::Unafold::melt->new();
+    $folder->NA('DNA');
+    $folder->temperature('37');
 
-my $folder = Bio::Tools::Run::Unafold::melt->new();
-$folder->NA('DNA');
-$folder->temperature('37');
+    my @primer_pairs =  grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} $p3_res->get_SeqFeatures;
+    foreach my $pair (@primer_pairs){
 
-# post-processes need to operate on a Bio::Seq annotated
-# with PrimerPairs
-my $postp = sub {
-  my $p3_res = shift;
+      my ($fp, $rp) = ($pair->forward_primer, $pair->reverse_primer);
 
-  my @primer_pairs =  grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} $p3_res->get_SeqFeatures;
-  foreach my $pair (@primer_pairs){
+      my $seq = $pair->seq;
+      my $amp_fold = $folder->run( $seq );
+      my $ac = $pair->annotation() || Bio::Annotation::Collection->new();
+      my $param = Buckley::Annotation::Result::Unafold->new(-value =>  $amp_fold->{Tm});
+      $ac->add_Annotation('Tm', $param);
+      $pair->annotation($ac);
 
-    my ($fp, $rp) = ($pair->forward_primer, $pair->reverse_primer);
+      $seq =  $fp->seq;
+      my $fp_fold = $folder->run( $seq );
+      $ac = $fp->annotation() || Bio::Annotation::Collection->new();
+      $param = Buckley::Annotation::Result::Unafold->new(-value =>  $fp_fold->{Tm});
+      $ac->add_Annotation('Tm', $param);
+      $fp->annotation($ac);
 
-    my $seq = $pair->seq;
-    my $amp_fold = $folder->run( $seq );
-    my $ac = $pair->annotation() || Bio::Annotation::Collection->new();
-    my $param = Buckley::Annotation::Result::Unafold->new(-value =>  $amp_fold->{Tm});
-    $ac->add_Annotation('Tm', $param);
-    $pair->annotation($ac);
+      $seq =  $rp->seq;
+      my $rp_fold = $folder->run($seq);
+      $ac = $rp->annotation() || Bio::Annotation::Collection->new();
+      $param = Buckley::Annotation::Result::Unafold->new(-value =>  $rp_fold->{Tm});
+      $ac->add_Annotation('Tm', $param);
+      $rp->annotation($ac);
+    }
+    return $p3_res;
+  };
 
-    $seq =  $fp->seq;
-    my $fp_fold = $folder->run( $seq );
-    $ac = $fp->annotation() || Bio::Annotation::Collection->new();
-    $param = Buckley::Annotation::Result::Unafold->new(-value =>  $fp_fold->{Tm});
-    $ac->add_Annotation('Tm', $param);
-    $fp->annotation($ac);
-
-    $seq =  $rp->seq;
-    my $rp_fold = $folder->run($seq);
-    $ac = $rp->annotation() || Bio::Annotation::Collection->new();
-    $param = Buckley::Annotation::Result::Unafold->new(-value =>  $rp_fold->{Tm});
-    $ac->add_Annotation('Tm', $param);
-    $rp->annotation($ac);
-   }
-
-  return $p3_res;
-};
-
-
+}
+$pp = Buckley::PrimerDesigner::PostProcess::Test->new();
 
 $pd = Buckley::PrimerDesigner->new(-verbose => $debug);
 $pd->primer3->set_parameters( %dc_params );
 
-$pd->register_post_process(name      => "postp",
-			   subref    => $postp,
-			   is_filter => 0 );
-
+$pd->register_post_process($pp);
 ok(@res = $pd->design($seq1));
 isa_ok($res[0], 'Bio::Seq');
-
-my ($pair) = grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} $res[0]->get_SeqFeatures;
-ok(my ($annot) = $pair->annotation()->get_Annotations("Tm"));
-isa_ok($annot, 'Buckley::Annotation::Result::Unafold');
 
 
 # Fake a SeqFetcher

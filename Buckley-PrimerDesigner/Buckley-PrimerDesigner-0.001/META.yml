@@ -5,6 +5,7 @@ author:
 build_requires:
   Bio::Root::Test: 0
   Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons: 0
+  Carp: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.31
 dynamic_config: 0

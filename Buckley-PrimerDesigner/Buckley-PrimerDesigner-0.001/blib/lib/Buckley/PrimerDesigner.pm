@@ -24,6 +24,8 @@ sub new {
   my $self = $class->SUPER::new(@args);
   $self->{_primer3} = Bio::Tools::Run::Primer3Redux->new();
   $self->throw("primer3 not found. Is it installed?") unless -x $self->primer3->executable;
+  $self->{_pre_process} = [];
+  $self->{_post_process} = [];
   return $self;
 }
 
@@ -38,8 +40,8 @@ sub primer3{
 
 sub seq_fetcher{
    my $self = shift;
-   my $subref = shift;
-   $self->{_seq_fetcher} = $subref if defined $subref;
+   my $sf = shift;
+   $self->{_seq_fetcher} = $sf if defined $sf;
    return $self->{_seq_fetcher};
 }
 
@@ -47,58 +49,36 @@ sub seq_fetcher{
 
 
 sub register_pre_process{
-  my $self = shift;
-
-  my %params = @_;
-  my $name = $params{name} or $self->throw("No name provided");
-  my $subref = $params{subref} or $self->throw("No subref provided");
-  my $is_filter = $params{is_filter} || 0;
-  my $description = $params{description} || '';
-
-  $self->throw("pre_process of that name already exists") if ($self->{_pre_process} && $self->{_pre_process}->{$_});
-
-  $self->{_pre_process}->{$name} = {subref      => $subref,
-				    description => $description,
-				    is_filter   => $is_filter};
-
-  push @{$self->{_pre_process_order}}, $name;
+  my ($self, $proc) = @_;
+  $self->throw("no process provided") unless $proc;
+  push @{$self->{_pre_process}}, $proc;
 
 }
 
 
 sub registered_pre_processes{
   my $self = shift;
-  return $self->{_pre_process_order};
+  return @{$self->{_pre_process}} ;
 }
+
+
 
 
 
 
 sub register_post_process{
-  my $self = shift;
-
-  my %params = @_;
-  my $name = $params{name} or $self->throw("No name provided");
-  my $subref = $params{subref} or $self->throw( "No subref provided");
-  my $is_filter = $params{is_filter} || 0;
-  my $description = $params{description} || '';
-
-  $self->throw("post_process of that name already exists") if ($self->{_post_process} && $self->{_post_process}->{$_});
-
-  $self->{_post_process}->{$params{name}} = {subref      => $subref,
-					    description => $description,
-					    is_filter   => $is_filter};
-  push @{$self->{_post_process_order}}, $name;
+  my ($self, $proc) = @_;
+  $self->throw("no process provided") unless $proc;
+  push @{$self->{_post_process}}, $proc;
 
 }
+
 
 
 sub registered_post_processes{
   my $self = shift;
-  return $self->{_post_process_order};
+  return @{$self->{_post_process}};
 }
-
-
 
 
 
@@ -118,11 +98,10 @@ sub design {
 
 
   # Run any pre-processes on the sequences
-  if (defined $self->registered_pre_processes){
-    foreach my $proc_name (@{$self->registered_pre_processes}){
-      my $proc = $self->{_pre_process}->{$proc_name}->{subref};
-      @seqs = map { &$proc($_) } @seqs;
-      $self->throw("No sequences returned by pre-process $proc_name") unless scalar(@seqs);
+  if (scalar $self->registered_pre_processes){
+    foreach my $proc ($self->registered_pre_processes){
+      @seqs = map { $proc->process($_) } @seqs;
+      $self->throw("No sequences returned by pre-process ".$proc->name) unless scalar(@seqs);
     }
   }
 
@@ -170,13 +149,12 @@ sub design {
 
   }
 
-  # Run any post-processing on the results
-  if (defined $self->registered_post_processes){
-    foreach my $proc_name (@{$self->registered_post_processes}){
-      my $proc = $self->{_post_process}->{$proc_name}->{subref};
-      @results = map { &$proc($_) } @results;
-    }
 
+  # Run any post-processing on the results
+  if (scalar $self->registered_post_processes){
+    foreach my $proc ($self->registered_post_processes){
+      @results = map { $proc->process($_) } @results;
+    }
   }
 
   return @results;
@@ -205,8 +183,9 @@ version 0.001
 
   $pd->primer3->set_parameters(PARAMNAME=>$paramvalue);
 
-  $pd->register_pre_process(name=>'foo', subref=>$asub, description=>"what this does");
-  $pd->register_post_process(name=>'bar', suref=>$bsub, description=>"blah blah blah");
+  $pd->seq_fetcher($sf);
+  $pd->register_pre_process($preproc);
+  $pd->register_post_process($postproc);
 
   my $PDres = $pd->design(@seqs);
 
@@ -232,8 +211,8 @@ Specify a function to be used to fetch sequences.
 If this is undefined then ->design(@seqs) expects @seqs to be an 
 array of Bio::Seq objects.
 
-If you have defined a seq_fetcher then it will be called for each 
-value of @seqs to create an array of Bio::Seq objects. 
+If you have defined a seq_fetcher then its ->fetch method will be 
+called for each value of @seqs to create an array of Bio::Seq objects.
 
 =head2 register_pre_process
 
@@ -245,83 +224,55 @@ value of @seqs to create an array of Bio::Seq objects.
   When registering a process, a name must be supplied.
   A optional description of the process may also be supplied.
 
-  By default, a process is a "modifer". It should take a Bio::Seq
-  object as a parameter, do something to it and return a Bio::Seq
-  object:
+  A Process should be a subclass of Buckley::PrimerDesigner::PreProcess. 
+  It should take a Bio::Seq object as a parameter, do something to it 
+  and return a Bio::Seq object or undef:
 
-    my $pre_process = sub {my $seq = shift;
-                           ... do some stuff ...
-                           return $modified_seq;
-                          }
-    $obj->register_pre_process(name         => "my_process",
-                               description  => "What my process does",
-                               subref       => $pre_process);
-
-
-  A process can also be a "filter", which should take a Bio::Seq
-  object, run some test on that sequence and return true if the
-  sequence should be kept and false if it should be discarded:
-
-    my $pre_filter = sub {my $seq = shift;
-                          if (...sequence has some characteristic...){
-                            return 1; #keep the seq
-                          }
-                          return;  #discard the seq
-                         };
-
-    $obj->register_pre_process(name      => "my_filter",
-                               subref    => $pre_filter,
-                               is_filter => 1 );
+    my $pre_process = Buckley::PrimerDesigner::PreProcess->new(
+                          process =>sub {my $seq = shift;
+                                            ... do some stuff ...
+                                         return $modified_seq;
+                                         },
+                          name => "proc name",
+                          description => "proc description");
+    $obj->register_pre_process($pre_process)
 
 =head2 registered_pre_processes
 
-Returns an arrayref of registered pre-process names
+Returns an array of registered pre-process objects
 
-my $pres = $obj->registered_pre_processes;
+my $preprocs = $obj->registered_pre_processes;
 
 =head2 register_post_process
 
-  Register a process to be run on each Primer3 result. 
+  Register a process to be run on each sequence prior to running
+  primer3.
 
   Processes will be run in the order in which they are defined.
 
   When registering a process, a name must be supplied.
   A optional description of the process may also be supplied.
 
-  By default, a process is a "modifer". It should take a
-  Bio::Tools::Primer3Redux::Result object as a parameter, 
-  do something to it and return a Bio::Tools::Primer3Redux::Result
-  object
+  A Process should be a subclass of Buckley::PrimerDesigner::PostProcess. 
+  It should take a Bio::Seq object as a parameter, with Primer SeqFeatures 
+  attached. It should do something to the primers and return the Bio::Seq.
+  It can return a sequence with no primers attached, but it should not
+  return undef.
 
-    my $post_process = sub {my $res = shift;
-                           ... do some stuff ...
-                           return $modified_res;
-                          }
-    $obj->register_post_process(name         => "my_process",
-                                description  => "What my process does",
-                                subref       => $post_process);
-
-
-  A process can also be a "filter", which should take a
-  Bio::Tools::Primer3Redux::Result  object, run some test on it
-  and return true if the result should be kept and false if it should be discarded:
-
-    my $post_filter = sub {my $res = shift;
-                          if (... res has some characteristic...){
-                            return 1; #keep the res
-                          }
-                          return;  #discard the res
-                         };
-
-    $obj->register_post_process(name      => "my_filter",
-                                subref    => $post_filter,
-                                is_filter => 1 );
+    my $post_process = Buckley::PrimerDesigner::PostProcess->new(
+                          process =>sub {my $seq = shift;
+                                            ... do some stuff ...
+                                         return $modified_seq;
+                                         },
+                          name => "proc name",
+                          description => "proc description");
+    $obj->register_post_process($post_process)
 
 =head2 registered_post_processes
 
-Returns an arrayref of registered post-process names
+Returns an array of registered post-process objects
 
-my $pres = $obj->registered_post_processes;
+my $preprocs = $obj->registered_pre_processes;
 
 =head2 design
 

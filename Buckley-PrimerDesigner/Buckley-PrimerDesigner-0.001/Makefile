@@ -17,7 +17,7 @@
 #     EXE_FILES => []
 #     LICENSE => q[perl]
 #     NAME => q[Buckley::PrimerDesigner]
-#     PREREQ_PM => { Scalar::Util=>q[0], Bio::Tools::Run::Unafold::melt=>q[0], Bio::Root::Root=>q[0], Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons=>q[0], Bio::Root::Test=>q[0], Bio::Tools::Run::Primer3Redux=>q[0], Bio::Annotation::SimpleValue=>q[0], Bio::SeqIO=>q[0], Bio::Seq=>q[0], Bio::Annotation::Collection=>q[0] }
+#     PREREQ_PM => { Scalar::Util=>q[0], Bio::Tools::Run::Unafold::melt=>q[0], Bio::Root::Root=>q[0], Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons=>q[0], Bio::Root::Test=>q[0], Bio::Tools::Run::Primer3Redux=>q[0], Bio::Annotation::SimpleValue=>q[0], Carp=>q[0], Bio::SeqIO=>q[0], Bio::Seq=>q[0], Bio::Annotation::Collection=>q[0] }
 #     VERSION => q[0.001]
 #     test => { TESTS=>q[t/*.t] }
 
@@ -545,6 +545,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '    Bio::SeqIO:           0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Bio::Tools::Run::Primer3Redux:  0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Bio::Tools::Run::Unafold::melt:  0' >> META_new.yml
+	$(NOECHO) $(ECHO) '    Carp:                 0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Scalar::Util:         0' >> META_new.yml
 	$(NOECHO) $(ECHO) 'no_index:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    directory:' >> META_new.yml
@@ -857,6 +858,7 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::SeqIO" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::Tools::Run::Primer3Redux" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Bio::Tools::Run::Unafold::melt" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Carp::" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Scalar::Util" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-thread-multi-5.8" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd

@@ -13,7 +13,8 @@ my %WriteMakefileArgs = (
   'AUTHOR' => 'Cass Johnston <cassjohnston@gmail.com>',
   'BUILD_REQUIRES' => {
     'Bio::Root::Test' => '0',
-    'Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons' => '0'
+    'Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons' => '0',
+    'Carp' => '0'
   },
   'CONFIGURE_REQUIRES' => {
     'ExtUtils::MakeMaker' => '6.31'

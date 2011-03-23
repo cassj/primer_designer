@@ -27,21 +27,35 @@ sub new {
 
 =head2 process
 
-Should be overridden by subclasses to return a subref to use as a process
+Should be overridden by subclasses
 
 =cut
 
 sub process {
   my $self = shift;
-  $self->throw("->callback should be defined by a subclass");
+  $self->throw("->process should be defined by a subclass");
+}
+
+=head2 name
+
+ Returns the process name
+
+=cut
+
+sub name {
+  my $self = shift;
+  return __PACKAGE__.'';
 }
 
 =head2 description
 
+ Returns the process description
+
 =cut
 
 sub description{
-  return "Base class for PrimerDesigner Processes. Do not use directly";
+  my $self = shift;
+  return $self->{description};
 }
 
 =head1 AUTHOR

@@ -24,7 +24,6 @@ lib/Buckley/PrimerDesigner/Process.pm
 lib/Buckley/PrimerDesigner/Process.pm~
 lib/Buckley/PrimerDesigner/Result.pm
 mlc
-t/#01.t#
 t/01.t
 t/01.t~
 t/02.t

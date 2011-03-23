@@ -8,11 +8,6 @@ BEGIN {
 use base 'Buckley::PrimerDesigner::Process';
 
 
-sub description{
-  return "Base class for PrimerDesigner Pre-Processes. Do not use directly";
-}
-
-
 
 
 1;
@@ -32,25 +27,21 @@ version 0.001
 
   package Buckley::PrimerDesigner::PreProcess::DoSomething;
 
-  {
-    my $process = sub{my $bioseq = shift; ... do some stuff ... return $bioseq || undef;}
-    sub process{ return $process; }
-  }
+  sub description {return "proc description"}
+  sub process {my ($self, $seq) = @_; ...do some stuff to $seq...; return $seq;}
 
   1;
 
 And elsewhere:
 
   my $pd = Buckley::PrimerDesigner->new();
-  my $pre_proc = Buckley::PrimerDesigner::PreProcess:DoSomething->new();  #blessed subref.
-  $pd->register_pre_process(name=>'do_stuff', subref=>$pre_proc->process, description=>"a thing which does stuff");
+  my $pre_proc = Buckley::PrimerDesigner::PreProcess:DoSomething->new();
+  $pd->register_pre_process($pre_proc);
   my $PDres = $pd->design(@seqs);
 
 =head1 DESCRIPTION
 
-PrimerDesigner can just take a subref as a pre-process, but if you make it a
-subclass of PreProcess instead then the web-interface will automatically
-be able to find it.
+A PreProcess for Buckley::PrimerDesigner.
 
 =head1 NAME
 
@@ -65,6 +56,8 @@ Constructor
 =head2 process
 
 Should be overridden by subclasses to return a subref to use as a process
+
+=head2 name
 
 =head2 description
 
