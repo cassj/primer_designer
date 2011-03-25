@@ -282,6 +282,7 @@ sub design {
 
     # Do we need to add the original seq features here?
     my $new_seq = $res->get_processed_seq;
+    $new_seq->id($seq->id); #get_processed_seq isn't getting the id - fix in Primer3Redux at some point.
     $new_seq->annotation($seq->annotation);
     $new_seq->add_SeqFeature($seq->get_SeqFeatures);
 
@@ -289,11 +290,10 @@ sub design {
 
     # reset sequence specific annotations
     foreach (@annots){
-       $self->primer3->$_(undef);
+      $self->primer3->$_(undef);
     }
 
   }
-
 
   # Run any post-processing on the results
   if (scalar $self->registered_post_processes){

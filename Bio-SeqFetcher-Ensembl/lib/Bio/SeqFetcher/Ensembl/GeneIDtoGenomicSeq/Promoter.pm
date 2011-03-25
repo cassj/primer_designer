@@ -97,7 +97,7 @@ sub _make_seqs{
      my $strand = $_->strand;
      my $chr = $_->slice->seq_region_name;
      my $id = $_->stable_id;
-
+     
      #start and end are always given on the top strand, so:
      
      my ($start, $end);
@@ -130,7 +130,9 @@ sub _make_seqs{
      $seq->add_SeqFeature($feat);
      push @seqs, $seq;
   }
+
   return @seqs;
+  
 }
 
 1;

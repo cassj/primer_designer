@@ -74,10 +74,9 @@ sub process {
   my $p3_res = shift;
 
   my $folder = $self->_folder;
-  my @primer_pairs =  grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} $p3_res->get_SeqFeatures;
+  my @primer_pairs = grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} $p3_res->get_SeqFeatures;
 
   foreach my $pair (@primer_pairs){
-
     my ($fp, $rp) = ($pair->forward_primer, $pair->reverse_primer);
 
     my $seq = $pair->seq;
@@ -116,7 +115,7 @@ sub process {
 }
 
 
-# internal function to check that the unafold results are ok.
+# internal function to check that the unafold results pass.
 sub _check_tm {
   my ($self, $feat) = @_;
   my $max_tm = $self->max_tm;

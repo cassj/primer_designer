@@ -3,7 +3,7 @@ use warnings;
 
 use Bio::Root::Test;
 
-test_begin(-tests => 33,
+test_begin(-tests => 34,
            -requires_modules => [qw()],
            -requires_networking => 0);
 
@@ -20,13 +20,17 @@ is($sf->_registry, 'Bio::EnsEMBL::Registry');
 
 # GeneIDtoGenomicSeq
 # Just gets the sequence of the gene. No annotation.
- use_ok('Bio::SeqFetcher::Ensembl::GeneIDtoGenomicSeq');
- ok($sf = Bio::SeqFetcher::Ensembl::GeneIDtoGenomicSeq->new( -species     => "mouse"));
- my @ids = ('ENSMUSG00000029249', 'ENSMUSG00000037395'); # +ve strand and -ve strand respectively.
- ok( my @seqs = $sf->fetch(@ids) );
- isa_ok($seqs[0], 'Bio::Seq'); 
- ok($seqs[0]->seq =~ /^AGCGTCCTGTGCTGGAATGTGCGGCTCCCGCGAGCTCGCGGCGCAGCAGCAGAAGACCGA/); 
- ok($seqs[1]->seq =~ /^GGGGCGGTGATGGCGGCTCCATATTAACACCTCCTCCTCCTCCTCCGCGCTCCCGCCCGC/); 
+use_ok('Bio::SeqFetcher::Ensembl::GeneIDtoGenomicSeq');
+ok($sf = Bio::SeqFetcher::Ensembl::GeneIDtoGenomicSeq->new( -species     => "mouse"));
+my @ids = ('ENSMUSG00000029249', 'ENSMUSG00000037395'); # +ve strand and -ve strand respectively.
+ok( my @seqs = $sf->fetch(@ids) );
+isa_ok($seqs[0], 'Bio::Seq'); 
+ok($seqs[0]->seq =~ /^AGCGTCCTGTGCTGGAATGTGCGGCTCCCGCGAGCTCGCGGCGCAGCAGCAGAAGACCGA/); 
+ok($seqs[1]->seq =~ /^GGGGCGGTGATGGCGGCTCCATATTAACACCTCCTCCTCCTCCTCCGCGCTCCCGCCCGC/); 
+is($seqs[0]->display_id, $ids[0], "display ID set ok");
+
+
+
 
 # GeneIDtoGenomicSeqPromoter
 # Just gets the sequence of the gene around the promoter, with the specified distances

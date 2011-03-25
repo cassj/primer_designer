@@ -116,9 +116,8 @@ isa_ok($res[0], 'Bio::Seq');
 @pp_sfs = grep {$_->isa("Bio::Tools::Primer3Redux::PrimerPair")} @sfs;
 ok(scalar @pp_sfs, "got some primer pairs");
 
-
-
-
-
+#just check we do actually have the relevant annotations?
+my $p = $pp_sfs[0];
+ok($p->annotation->get_Annotations('Tm'), "Tm is set by unafold");
 
 
