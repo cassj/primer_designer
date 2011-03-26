@@ -112,10 +112,12 @@ eval "require $seq_fetcher" or die "Couldn't load $seq_fetcher";
 # sequence fetcher args from config
 my %sf_args = %{$config->{$seq_fetcher} || {}};
 
+
 #add bioperl style -param_name, just in case
 foreach (grep {!/^-/} keys %sf_args){
     $sf_args{"-$_"}= $sf_args{$_};
 }
+
 
 my $sf = $seq_fetcher->new(%sf_args);
 $pd->seq_fetcher($sf);

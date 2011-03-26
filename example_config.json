@@ -23,7 +23,9 @@
 	          "PRIMER_MAX_NS_ACCEPTED" :  0,
 	          "PRIMER_MAX_POLY_X" : 5
 	        },
-
+   "Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq" : {
+                                                          "species" : "mouse"
+                                                       },
    "Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons" : {
                                                                     "species" : "mouse"
                                                                   },
@@ -36,7 +38,6 @@
                                                                  "upstream" : 1000,
                                                                  "downstream" : 1000
                                                               },
-
    "Buckley::PrimerDesigner::PostProcess::UnafoldMelt" : {
 	                                                    "max_tm" : 70,
                                                             "program_name" : "melt.pl",
