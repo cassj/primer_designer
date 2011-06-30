@@ -23,6 +23,7 @@
 	          "PRIMER_MAX_NS_ACCEPTED" :  0,
 	          "PRIMER_MAX_POLY_X" : 5
 	        },
+
    "Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq" : {
                                                           "species" : "mouse"
                                                        },
@@ -33,11 +34,24 @@
                                                        "species" : "mouse"
                                                     },
 
+   "Bio::SeqFetcher::Ensembl::ChromosomePositiontoGenomicSeq" : {
+                                                                  "species" : "mouse"
+                                                                },
+
    "Bio::SeqFetcher::Ensembl::GeneIDtoGenomicSeq::Promoter" : {
                                                                  "species" : "mouse",
                                                                  "upstream" : 1000,
                                                                  "downstream" : 1000
                                                               },
+
+   "Buckley::PrimerDesigner::PreProcess::RepeatMask" : {
+                                                          "species" : "mouse",
+                                                          "nolow" : "1",
+                                                          "verbose" : "1",
+                                                          "path" : "/usr/local/RepeatMasker"
+
+                                                       },
+
    "Buckley::PrimerDesigner::PostProcess::UnafoldMelt" : {
 	                                                    "max_tm" : 70,
                                                             "program_name" : "melt.pl",
@@ -46,5 +60,7 @@
                                                             "temperature" : 60,
                                                             "magnesium" : 0.003
                                                          }
+
+  
 
 }

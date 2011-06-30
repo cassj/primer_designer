@@ -12,7 +12,7 @@ use Bio::Root::Test;
 use Bio::Seq;
 use Buckley::PrimerDesigner;
 
-test_begin(-tests => 19);
+test_begin(-tests => 22);
 my $debug = test_debug();
 
 use_ok('Buckley::PrimerDesigner::PreProcess');
@@ -94,6 +94,18 @@ is($annots[0]->value, '189,1 360,1 522,1 705,1 864,1 1101,1 1242,1 1353,1', 'Exo
 # Should have some primers.
 my @pp_sfs = grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} @sfs;
 ok(scalar @pp_sfs, "Got some primers");
+
+
+
+############
+# RepeatMask PreProcess
+
+use_ok('Buckley::PrimerDesigner::PreProcess::RepeatMask');
+$pre = Buckley::PrimerDesigner::PreProcess::RepeatMask->new();
+$pd->register_pre_process($pre);
+ok(@res = $pd->design($seq));
+isa_ok($res[0], 'Bio::Seq');
+
 
 
 

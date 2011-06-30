@@ -96,6 +96,17 @@ my @pp_sfs = grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} @sfs;
 ok(scalar @pp_sfs, "Got some primers");
 
 
+###########
+# RepeatMasker PreProcess
+ 
+use_ok('Buckley::PrimerDesigner::PreProcess::RepeatMask');
+$pre = Buckley::PrimerDesigner::PreProcess::RepeatMask->new();
+$pd->register_pre_process($pre);
+ok(my @res = $pd->design($seq));
+isa_ok($res[0], 'Bio::Seq');
+
+
+
 
 ###########
 # Unafold PostProcess

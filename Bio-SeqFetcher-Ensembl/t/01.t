@@ -3,7 +3,7 @@ use warnings;
 
 use Bio::Root::Test;
 
-test_begin(-tests => 34,
+test_begin(-tests => 41,
            -requires_modules => [qw()],
            -requires_networking => 0);
 
@@ -28,6 +28,7 @@ isa_ok($seqs[0], 'Bio::Seq');
 ok($seqs[0]->seq =~ /^AGCGTCCTGTGCTGGAATGTGCGGCTCCCGCGAGCTCGCGGCGCAGCAGCAGAAGACCGA/); 
 ok($seqs[1]->seq =~ /^GGGGCGGTGATGGCGGCTCCATATTAACACCTCCTCCTCCTCCTCCGCGCTCCCGCCCGC/); 
 is($seqs[0]->display_id, $ids[0], "display ID set ok");
+
 
 
 
@@ -93,3 +94,16 @@ is($feats[1]->start, 1190);
 is($feats[0]->start, 272);
 is($feats[1]->start, 329);
 
+
+
+# ChromosomePostitiontoGenomicSeq
+# Just gets the sequence of the region. No annotation.
+use_ok('Bio::SeqFetcher::Ensembl::ChromosomePositiontoGenomicSeq');
+ok($sf = Bio::SeqFetcher::Ensembl::ChromosomePositiontoGenomicSeq->new( -species     => "mouse"));
+@ids = ('chr10:86953564-86956405:1','chr10:86953564-86956405:-1'); # +ve strand and -ve strand respectively (of the Mash1 gene, which is on -ve strand)
+ok( @seqs = $sf->fetch(@ids) );
+
+isa_ok($seqs[0], 'Bio::Seq');
+ok($seqs[0]->seq =~ /^TCATTCTCTCTCTCTCTTCTTTTTATATAAAAAAGGAAAAAGTTTTATTACAAAACTAGT/); 
+ok($seqs[1]->seq =~ /^AGCAGTCTCTCACTTCTGGCCAGGGAACGTGGAAGGCGTACCGGCTGGGAGCCGGTTAGG/);
+is($seqs[0]->display_id, $ids[0], "display ID set ok");
