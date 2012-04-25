@@ -44,7 +44,7 @@ my $result = GetOptions (
 
 
 if($help){
-  print "\n\tdesign_primers --seq_fetcher 'Bio::SeqFetcher::Foo', --pre_process 'Buckley::PrimerDesigner::PreProcess::Foo --post_process 'Buckley::PrimerDesigner::PostProcess::Foo' --identifier id1 --identifier id2 --identifier id3 --identifier id4...\n";
+  print "\n\tdesign_primers --seq_fetcher 'Bio::SeqFetcher::Foo', --pre_process 'Buckley::PrimerDesigner::PreProcess::Foo' --post_process 'Buckley::PrimerDesigner::PostProcess::Foo' --conf 'conf.json' --identifier id1 --identifier id2 --identifier id3 --identifier id4...\n";
   print "\n\tdesign_primers --list_seq_fetchers\n";
   print "\n\tdesign_primers --list_pre_processes\n";
   print "\n\tdesign_primers --list_post_processes\n";

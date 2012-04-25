@@ -3,17 +3,17 @@
                   "PRIMER_TASK" : "pick_detection_primers",
 	          "PRIMER_PICK_LEFT_PRIMER" : 1,
 	          "PRIMER_PICK_RIGHT_PRIMER" : 1,
-	          "PRIMER_NUM_RETURN" : 20,
-	          "PRIMER_PRODUCT_SIZE_RANGE" : "100-1000",
+	          "PRIMER_NUM_RETURN" : 3,
+	          "PRIMER_PRODUCT_SIZE_RANGE" : "80-150",
 	          "PRIMER_MIN_SIZE" : 18,
-	          "PRIMER_OPT_SIZE" : 20,
+	          "PRIMER_OPT_SIZE" : 22,
 	          "PRIMER_MAX_SIZE" : 27,
 	          "PRIMER_MIN_GC" : 40,
-	          "PRIMER_MAX_GC" : 100,
+	          "PRIMER_MAX_GC" : 80,
 	          "PRIMER_OPT_GC_PERCENT" : 60,
-	          "PRIMER_MIN_TM" : 57,
+	          "PRIMER_MIN_TM" : 58,
 	          "PRIMER_OPT_TM" : 60,
-	          "PRIMER_MAX_TM" : 70,
+	          "PRIMER_MAX_TM" : 62,
 	          "PRIMER_PAIR_MAX_DIFF_TM" : 1,
 	          "PRIMER_TM_FORMULA" : 1,
 	          "PRIMER_SALT_CORRECTIONS" : 1,
@@ -21,7 +21,9 @@
 	          "PRIMER_SALT_DIVALENT" : 0,
 	          "PRIMER_MAX_TEMPLATE_MISPRIMING" : 10,
 	          "PRIMER_MAX_NS_ACCEPTED" :  0,
-	          "PRIMER_MAX_POLY_X" : 5
+	          "PRIMER_MAX_POLY_X" : 5,
+                  "PRIMER_TM_FORMULA" : 0,
+                  "PRIMER_SALT_CORRECTIONS" : 0			
 	        },
 
    "Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq" : {
@@ -40,8 +42,8 @@
 
    "Bio::SeqFetcher::Ensembl::GeneIDtoGenomicSeq::Promoter" : {
                                                                  "species" : "mouse",
-                                                                 "upstream" : 1000,
-                                                                 "downstream" : 1000
+                                                                 "upstream" : 300,
+                                                                 "downstream" : 100
                                                               },
 
    "Buckley::PrimerDesigner::PreProcess::RepeatMask" : {
@@ -53,7 +55,7 @@
                                                        },
 
    "Buckley::PrimerDesigner::PostProcess::UnafoldMelt" : {
-	                                                    "max_tm" : 70,
+	                                                    "max_tm" : 65,
                                                             "program_name" : "melt.pl",
                                                             "NA" : "DNA",
                                                             "sodium" : 0.05,
