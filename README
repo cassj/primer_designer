@@ -1,5 +1,8 @@
 Automation of primer design tasks for the Buckley Lab. 
 
+Author: Cass Johnston <cassjohnston@gmail.com>
+        Matt Burney  
+
 We use Primer3 to design our primers. 
 
 We use Unafold's melt.pl to check the self-hybridisation of the primers. Doesn't work so well on longer sequences so I'm ignoring amplicon self-hybridisation at the moment. Am pondering using some implementation of McCaskill's DP algorithm for partition function calculation on amplicon sequences so we can at least get probabilites of single-strandedness of bases in the amplicon.
