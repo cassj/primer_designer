@@ -58,7 +58,7 @@ if ($id_file){
   my $fh = new IO::File;
   $fh->open("< $id_file") or die "Couldn't open id file $id_file for reading";
   while(my $line = <$fh>){
-   next if $line =~/!\s*$/;
+   next if $line =~/^\s*$/;
    chomp $line;
    push @ids, $line;
   }
