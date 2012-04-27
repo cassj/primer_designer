@@ -27,6 +27,7 @@ my (
     @post_processes,
     $config_file,
     @ids,
+    $id_file,
    );
 
 my $result = GetOptions (
@@ -34,7 +35,8 @@ my $result = GetOptions (
 			 "pre_process=s"         => \@pre_processes,
 			 "post_process=s"        => \@post_processes,
 			 "config_file=s"         => \$config_file,
-			 "identifiers=s"         => \@ids,
+			 "identifier=s"          => \@ids,
+                         "id_file=s"             => \$id_file,
 			 "verbose"               => \$verbose,
 			 "help|h"                => \$help,    
 			 "list_pre_processes"    => \$list_pre_processes,
@@ -50,6 +52,16 @@ if($help){
   print "\n\tdesign_primers --list_post_processes\n";
   print "\n";
 
+}
+
+if ($id_file){
+  my $fh = new IO::File;
+  $fh->open("< $id_file") or die "Couldn't open id file $id_file for reading";
+  while(my $line = <$fh>){
+   chomp $line;
+   push @ids, $line;
+  }
+  $fh->close;
 }
 
 if ($list_pre_processes){
