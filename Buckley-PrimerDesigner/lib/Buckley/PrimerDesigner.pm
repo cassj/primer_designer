@@ -245,7 +245,11 @@ sub design {
   # Run any pre-processes on the sequences
   if (scalar $self->registered_pre_processes){
     foreach my $proc ($self->registered_pre_processes){
-      @seqs = map { $proc->process($_) } @seqs;
+      if($proc->global){
+        @seqs = $proc->process(@seqs);
+      }else{
+        @seqs = map { $proc->process($_) } @seqs;
+      }
       $self->throw("No sequences returned by pre-process ".$proc->name) unless scalar(@seqs);
     }
   }
@@ -298,7 +302,12 @@ sub design {
   # Run any post-processing on the results
   if (scalar $self->registered_post_processes){
     foreach my $proc ($self->registered_post_processes){
-      @results = map { $proc->process($_) } @results;
+      if($proc->global){
+        @results = $proc->process(@results);
+      }else{
+        @results = map { $proc->process($_) } @results;
+      }
+      $self->throw("No results returned by post-process ".$proc->name) unless scalar(@results);
     }
   }
 

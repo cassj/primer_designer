@@ -41,6 +41,13 @@ Constructor
 
 Should be overridden by subclasses to return a subref to use as a process
 
+=head2 global
+
+By default, process objects are assumed to be iterative and the ->process 
+method is called for each sequence in turn.
+If the process object's global method returns true then the ->process
+method is called only once and is passed all of the sequences.
+
 =head2 name
 
 =head2 description

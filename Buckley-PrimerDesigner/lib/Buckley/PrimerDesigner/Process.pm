@@ -36,6 +36,15 @@ sub process {
   $self->throw("->process should be defined by a subclass");
 }
 
+=head2 global {
+ 
+ Boolean, defaults to false.
+
+=cut
+sub global {
+  return 0;
+}
+
 =head2 name
 
  Returns the process name

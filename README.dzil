@@ -1,0 +1,46 @@
+I am using Dist::Zilla (http://dzil.org/) for managing my perl modules. 
+If you're a developer and you want to add a new seqfetcher or pre or post processor
+then these notes mightbe useful if you want to use dzil.
+
+Start by installing Dist::Zilla
+
+      > perl -MCPAN -e shell
+ cpan > install Dist::Zilla
+
+It has quite a few dependencies so it might take a while...
+
+You will also need a few dzil plugins:
+
+ cpan> install Dist::Zilla::Plugin::AutoPrereqs
+ cpan> install Dist::Zilla::Plugin::Git::NextVersion
+ cpan> install Dist::Zilla::Plugin::ModuleBuild
+ cpan> install Dist::Zilla::Plugin::PkgVersion
+ cpan> install Dist::Zilla::Plugin::PodWeaver
+ cpan> install Dist::Zilla::PluginBundle::Classic
+ cpan> install Dist::Zilla::PluginBundle::Git
+
+
+As a normal user, not root, run 
+
+ dzil setup
+
+Include your PAUSE account details if you wish to release your modules to CPAN. 
+
+This will create ~/.dzil/config.ini
+
+To create a new module, you just have to do 
+
+ dzil new My::Module
+
+By default, this will create an extremely basic skeleton module containing files
+ My-Module/lib/My/Module.pm 
+ My-Module/dist.ini
+
+Dzil allows you to define different 'minting profiles' that define the skeleton.
+If the modules you write fall into particular categories, each requiring their 
+own boilerplate, you can define a miniting profile for each one.
+
+
+
+
+

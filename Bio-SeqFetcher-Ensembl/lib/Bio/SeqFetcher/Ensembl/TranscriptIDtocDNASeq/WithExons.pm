@@ -4,6 +4,19 @@ use base 'Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq';
 
 use Bio::SeqFeature::Generic;
 
+=head1 NAME
+
+Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons - sequence fetcher for ensembl transcript id to cDNA sequence with exon annotations
+
+=head1 SYNOPSIS
+
+ use Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq:WithExons
+
+ my $fetcher = Bio::SeqFetcher::Ensembl::TranscriptIDtocDNASeq::WithExons->new(-species => $species);
+ my @bioseqs = $fetcher->(@some_seq_ids);
+
+
+
 =head2 description
 
 =cut

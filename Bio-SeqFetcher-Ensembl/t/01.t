@@ -98,8 +98,8 @@ is($feats[1]->start, 329);
 use_ok('Bio::SeqFetcher::Ensembl::TranscriptIDtoRNASeq');
 ok($sf = Bio::SeqFetcher::Ensembl::TranscriptIDtoRNASeq->new( -species => "mouse"));
 
-my @t_ids = ('ENSMUST00000080359', 'ENSMUST00000073279');
-ok( my @seqs = $sf->fetch(@t_ids) );
+@t_ids = ('ENSMUST00000080359', 'ENSMUST00000073279');
+ok( @seqs = $sf->fetch(@t_ids) );
 isa_ok($seqs[0], 'Bio::Seq');
 
 ok($seqs[0]->seq =~ /^UAGUUUUUAGAACUUUAUUUCAAU/ );
