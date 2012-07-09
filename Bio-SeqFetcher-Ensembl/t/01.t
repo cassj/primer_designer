@@ -3,7 +3,7 @@ use warnings;
 
 use Bio::Root::Test;
 
-test_begin(-tests => 41,
+test_begin(-tests => 47,
            -requires_modules => [qw()],
            -requires_networking => 0);
 
@@ -28,9 +28,6 @@ isa_ok($seqs[0], 'Bio::Seq');
 ok($seqs[0]->seq =~ /^AGCGTCCTGTGCTGGAATGTGCGGCTCCCGCGAGCTCGCGGCGCAGCAGCAGAAGACCGA/); 
 ok($seqs[1]->seq =~ /^GGGGCGGTGATGGCGGCTCCATATTAACACCTCCTCCTCCTCCTCCGCGCTCCCGCCCGC/); 
 is($seqs[0]->display_id, $ids[0], "display ID set ok");
-
-
-
 
 
 # GeneIDtoGenomicSeqPromoter
@@ -93,6 +90,22 @@ is($feats[1]->start, 1190);
 @feats = $neg_seq->get_SeqFeatures;
 is($feats[0]->start, 272);
 is($feats[1]->start, 329);
+
+
+# TranscriptIDtoRNAseq
+# Gets the sequence of the transcript as RNA. No features
+
+use_ok('Bio::SeqFetcher::Ensembl::TranscriptIDtoRNASeq');
+ok($sf = Bio::SeqFetcher::Ensembl::TranscriptIDtoRNASeq->new( -species => "mouse"));
+
+my @t_ids = ('ENSMUST00000080359', 'ENSMUST00000073279');
+ok( my @seqs = $sf->fetch(@t_ids) );
+isa_ok($seqs[0], 'Bio::Seq');
+
+ok($seqs[0]->seq =~ /^UAGUUUUUAGAACUUUAUUUCAAU/ );
+ok($seqs[1]->seq =~ /^CACCUUUAAAUCUUUAAUCCUUUA/ );
+
+
 
 
 
