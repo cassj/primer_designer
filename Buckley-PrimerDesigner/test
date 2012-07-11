@@ -1,0 +1,1087 @@
+1..22
+ok 1 - use Buckley::PrimerDesigner::PreProcess;
+ok 2 - require Buckley::PrimerDesigner::PreProcess;
+ok 3 - use Buckley::PrimerDesigner::PostProcess;
+ok 4 - require Buckley::PrimerDesigner::PostProcess;
+ok 5 - pre process instantiation
+ok 6 - post process instantiation
+ok 7 - should be defined by a subclass
+ok 8 - should be defined by a subclass
+ok 9 - use Buckley::PrimerDesigner::PreProcess::OverlapExonBoundaries;
+ok 10
+ok 11 - The object isa Bio::Seq
+ok 12 - Exon boundary features retained
+ok 13 - Primer3 Annotations added
+ok 14 - Exon Boundary Primer 3 param set correctly
+ok 15 - Got some primers
+ok 16 - use Buckley::PrimerDesigner::PreProcess::RepeatMask;
+ok 17 - use Buckley::PrimerDesigner::PostProcess::UnafoldMelt;
+ok 18 - use Buckley::PrimerDesigner::PostProcess::Tile;
+ok 19 - The object isa Buckley::PrimerDesigner::PostProcess::Tile
+$VAR1 = bless( {
+                 'primary_seq' => bless( {
+                                           'display_id' => 'ENSMUST00000072119',
+                                           '_seq_length' => undef,
+                                           'accession_number' => 'ENSMUST00000072119',
+                                           '_root_verbose' => 0,
+                                           'seq' => 'CGAGTGCCACGAACTGGCCAATGAGGAGCGAGCGGCCCGGGGTTTAAACCTAAGCCCGGCAGACTCCTCCCGGCGTGCTGCGGAGGAACGGCTGTTAGTGTTTAGCTGTGGATAGCCAGAGGTTAGGGTGTCTTCTCGAATCGGGGAACCTCTGATTTTGGAGGAGCCATGGCGCTCAGGGTCACTAGGAACACGAAAATTAACGCAGAAAATAAGGCCAAGGTCAGTATGGCAGGCGCCAAGCGTGTGCCTGTGACAGTTACTGCTGCTTCCAAGCCCGGGCTGAGACCGAGAACTGCTCTTGGAGACATTGGTAATAAAGTCAGCGAAGAGCTACAGGCAAGAGTGCCTCTGAAAAGGGAAGCAAAAACGCTAGGTACTGGAAAAGGTACTGTTAAAGCCCTACCAAAACCTGTAGAGAAGGTGCCTGTGTGTGAACCAGAGGTGGAACTTGCTGAGCCTGAGCCTGAACCTGAACTTGAACATGTTAGAGAAGAGAAGCTTTCTCCTGAACCTATTTTGGTTGATAATCCCTCTCCAAGCCCGATGGAAACATCTGGATGTGCGCCTGCAGAAGAGTATCTGTGTCAGGCTTTCTCTGATGTAATCCTTGCAGTGAGTGACGTAGACGCAGATGATGGGGCTGACCCAAACCTCTGTAGTGAATATGTGAAAGATATCTATGCTTATCTCCGACAACTGGAGGAAGAGCAGTCAGTTAGACCAAAATACCTACAGGGTCGTGAAGTGACTGGAAACATGAGAGCTATCCTCATTGACTGGCTAATACAGGTTCAGATGAAATTTAGGCTGCTTCAGGAGACCATGTACATGACTGTGTCCATTATTGATCGGTTCATGCAGAACAGTTGTGTGCCCAAGAAGATGCTACAGCTGGTCGGTGTAACGGCCATGTTTATTGCAAGCAAATATGAGGAGATGTACCCTCCAGAAATAGGTGACTTCGCCTTTGTGACTAACAACACGTACACTAAGCACCAGATCAGACAGATGGAGATGAAGATTCTCAGAGTTCTGAACTTCAGCCTGGGTCGCCCTCTGCCTCTGCACTTCCTCCGTAGAGCATCTAAAGTCGGAGAGGTTGACGTCGAGCAGCACACTTTGGCCAAATACCTCATGGAGCTCTCCATGCTGGACTACGACATGGTGCATTTTGCTCCTTCTCAAATTGCAGCTGGGGCTTTCTGCTTAGCGCTGAAAATTCTTGACAACGGTGAATGGACACCAACTCTGCAGCACTACCTATCCTACAGTGAAGACTCCCTGCTTCCTGTTATGCAGCACCTGGCTAAGAATGTAGTCATGGTGAACTGTGGCCTCACAAAGCACATGACTGTCAAGAACAAGTATGCAGCATCTAAGCATGCTAAGATCAGCACGCTGGCACAGCTGAACTGTACACTAGTTCAGAATTTGTCTAAGGCCGTGACAAAGGCATAACTCCAATAGACTGCTACATCTGCAGATGCAGTTGGCACCATGTGCCGCCTGTACATAGGATACCTACCGTGTTTACTTGCTCTTCAATAAAGGTTGTGACTTCTCATTTTACATAGCTTAACTCATTTGAATGTTGTTGCTTCTGAGTTTAGGCTAACGGAAGTTGTCGAATTTAGGAGTATATTAAAAACTGCATCTAGTTTTAACAGTGGATCCAACTAATGTATATATCTGTAGCCTATATGTCTATATACATCCTTCACTGTGTGTCCTTATATCATCATGTCTTCTGCCTCACTCTAGTTTAAACTCTAAATCTACCAGCTAGTCCTTTGTTCCATTTTCCAGTGGTTGCCACCTTTAACCACTGTCTCTTGGTTTGTCAACTTTCAGATCTGAAACCAAGTATCTTTTTTTATGTAATTATTTATTTGTTCTTAATTGGAAAATAGGATGTTCAAAATTAAAGGTGTGTTTTAAAAAGAATTTGCCCCCAAGTCTCACTATCAACAGATAAGGGTGTATTCTTGTATATCCTGTATAGATATAATCATGCATATACTCCCAAGGAGATATTTTTATATGGGTTCATTTTATCAACAGTATTCCTATCAGCATTCCTTTCAATGCCTATATTGCATTTCCTAGTGTGAACAAACTGTGTGTAACATAGTCATTCCCTCGGTGGGATTCAAGTGCATTCTCTCAGTGCCCTCCACAGTGTTCTTAAATGATGTTTAATGTCTTGCTTGGCTTCATTCATAGTAGCTCTTCCAGGGGTGTGCTTTGAATTCTGACAGCCAGATGGGTGTGGCTGCCACCATACCAAGGCGCCACTCCTGTCTTGTAATGCCACCTGGAAAAGAATCCTGTCTCATTTGCTGTTTTAATTTATACATCTGATATCAAGTTGAATAAAATTTATTGGTGGAAAGCTTTCACAATTCTCATTTGCCCTTTTGACTGTTTATGTTGTCTTTGCAATATGGAGACTTTATGTTGCTAATAAACATAGTTTTCGATTTTCA',
+                                           '_nowarnonempty' => undef,
+                                           'alphabet' => 'dna'
+                                         }, 'Bio::PrimarySeq' ),
+                 '_as_feat' => [
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.026014'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'GCTGCGGAGGAACGGCTGTT'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '65.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '7.09'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.974'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '7.09'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '41.08'
+                                                                               ],
+                                                               'rank' => [
+                                                                           0
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       sub { "DUMMY" }
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 77,
+                                                                  '_end' => 96
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_0'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.032419'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'CTGGGTCGCCCTCTGCCTCT'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.968'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '11.71'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '41.73'
+                                                                               ],
+                                                               'rank' => [
+                                                                           1
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 1048,
+                                                                  '_end' => 1067
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_1'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.102991'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'TCGCCCTCTGCCTCTGCACT'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '65.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.897'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '39.73'
+                                                                               ],
+                                                               'rank' => [
+                                                                           2
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 1053,
+                                                                  '_end' => 1072
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_2'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.164805'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'GAGCCATGGCGCTCAGGGTC'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '15.27'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.835'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '18.48'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '43.55'
+                                                                               ],
+                                                               'rank' => [
+                                                                           3
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 164,
+                                                                  '_end' => 183
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_3'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.178276'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'ACTTCAGCCTGGGTCGCCCT'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '65.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.822'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '11.71'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '41.73'
+                                                                               ],
+                                                               'rank' => [
+                                                                           4
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 1040,
+                                                                  '_end' => 1059
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_4'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.180143'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'CAATGAGGAGCGAGCGGCCC'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '60.180'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '42.48'
+                                                                               ],
+                                                               'rank' => [
+                                                                           5
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 19,
+                                                                  '_end' => 38
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_5'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.180143'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'CCAATGAGGAGCGAGCGGCC'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '60.180'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '42.48'
+                                                                               ],
+                                                               'rank' => [
+                                                                           6
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 18,
+                                                                  '_end' => 37
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_6'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.180143'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'GGCCAATGAGGAGCGAGCGG'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '60.180'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '38.25'
+                                                                               ],
+                                                               'rank' => [
+                                                                           7
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 16,
+                                                                  '_end' => 35
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_7'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.231130'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'GTCGCCCTCTGCCTCTGCAC'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.769'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '39.73'
+                                                                               ],
+                                                               'rank' => [
+                                                                           8
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 1052,
+                                                                  '_end' => 1071
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_8'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.250602'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'TGGGTCGCCCTCTGCCTCTG'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '60.251'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '11.71'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '41.73'
+                                                                               ],
+                                                               'rank' => [
+                                                                           9
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 1049,
+                                                                  '_end' => 1068
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_9'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.250602'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'TCAGCCTGGGTCGCCCTCTG'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '13.52'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '60.251'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '13.52'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '41.73'
+                                                                               ],
+                                                               'rank' => [
+                                                                           10
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 1043,
+                                                                  '_end' => 1062
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_10'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.250988'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'TGGAGGAGCCATGGCGCTCA'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '65.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '19.80'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '60.251'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '26.41'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '38.70'
+                                                                               ],
+                                                               'rank' => [
+                                                                           11
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 159,
+                                                                  '_end' => 178
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_11'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.251075'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'AAGCCCGGCAGACTCCTCCC'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '60.251'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '10.07'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '0.00'
+                                                                               ],
+                                                               'rank' => [
+                                                                           12
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 52,
+                                                                  '_end' => 71
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_12'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.304692'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'CGAGCGGCCCGGGGTTTAAA'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '65.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.695'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '22.10'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '0.00'
+                                                                               ],
+                                                               'rank' => [
+                                                                           13
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 29,
+                                                                  '_end' => 48
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_13'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.309918'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'GCCACCATACCAAGGCGCCA'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '65.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '3.98'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.690'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '28.46'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '33.65'
+                                                                               ],
+                                                               'rank' => [
+                                                                           14
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 2278,
+                                                                  '_end' => 2297
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_14'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.309918'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'TGCCACCATACCAAGGCGCC'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '65.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '18.38'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.690'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '18.38'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '46.47'
+                                                                               ],
+                                                               'rank' => [
+                                                                           15
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 2277,
+                                                                  '_end' => 2296
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_15'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.382292'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'GCGGCCCGGGGTTTAAACCT'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '65.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.00'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.618'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '27.23'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '45.09'
+                                                                               ],
+                                                               'rank' => [
+                                                                           16
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 32,
+                                                                  '_end' => 51
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_16'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.382292'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'AGCGGCCCGGGGTTTAAACC'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '65.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '22.06'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.618'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '22.06'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '46.77'
+                                                                               ],
+                                                               'rank' => [
+                                                                           17
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 31,
+                                                                  '_end' => 50
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_17'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.386268'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'GCCATGGCGCTCAGGGTCAC'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '0.76'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '60.386'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '20.47'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '43.55'
+                                                                               ],
+                                                               'rank' => [
+                                                                           18
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 166,
+                                                                  '_end' => 185
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_18'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {
+                                                               'num_returned' => [
+                                                                                   '20'
+                                                                                 ],
+                                                               'penalty' => [
+                                                                              '0.442554'
+                                                                            ],
+                                                               'sequence' => [
+                                                                               'GAGGAGCCATGGCGCTCAGG'
+                                                                             ],
+                                                               'gc_percent' => [
+                                                                                 '70.000'
+                                                                               ],
+                                                               'self_end_th' => [
+                                                                                  '5.17'
+                                                                                ],
+                                                               'tm' => [
+                                                                         '59.557'
+                                                                       ],
+                                                               'self_any_th' => [
+                                                                                  '24.51'
+                                                                                ],
+                                                               'hairpin_th' => [
+                                                                                 '45.36'
+                                                                               ],
+                                                               'rank' => [
+                                                                           19
+                                                                         ]
+                                                             },
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 161,
+                                                                  '_end' => 180
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_primary_tag' => 'ss_oligo',
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'internal_19'
+                                        }, 'Bio::Tools::Primer3Redux::Primer' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {},
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 189,
+                                                                  '_end' => 189
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'exon boundary'
+                                        }, 'Bio::SeqFeature::ExonBoundary' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {},
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 360,
+                                                                  '_end' => 360
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'exon boundary'
+                                        }, 'Bio::SeqFeature::ExonBoundary' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {},
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 522,
+                                                                  '_end' => 522
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'exon boundary'
+                                        }, 'Bio::SeqFeature::ExonBoundary' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {},
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 705,
+                                                                  '_end' => 705
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'exon boundary'
+                                        }, 'Bio::SeqFeature::ExonBoundary' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {},
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 864,
+                                                                  '_end' => 864
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'exon boundary'
+                                        }, 'Bio::SeqFeature::ExonBoundary' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {},
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 1101,
+                                                                  '_end' => 1101
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'exon boundary'
+                                        }, 'Bio::SeqFeature::ExonBoundary' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {},
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 1242,
+                                                                  '_end' => 1242
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'exon boundary'
+                                        }, 'Bio::SeqFeature::ExonBoundary' ),
+                                 bless( {
+                                          '_gsf_tag_hash' => {},
+                                          '_root_cleanup_methods' => [
+                                                                       $VAR1->{'_as_feat'}[0]{'_root_cleanup_methods'}[0]
+                                                                     ],
+                                          '_gsf_seq' => $VAR1->{'primary_seq'},
+                                          '_location' => bless( {
+                                                                  '_strand' => 1,
+                                                                  '_location_type' => 'EXACT',
+                                                                  '_start' => 1353,
+                                                                  '_end' => 1353
+                                                                }, 'Bio::Location::Simple' ),
+                                          '_parse_h' => {},
+                                          '_root_verbose' => 0,
+                                          'display_name' => 'exon boundary'
+                                        }, 'Bio::SeqFeature::ExonBoundary' )
+                               ],
+                 '_root_verbose' => 0,
+                 '_annotation' => bless( {
+                                           '_typemap' => bless( {
+                                                                  '_type' => {
+                                                                               'SEQUENCE_TARGET' => 'Buckley::Annotation::Parameter::Primer3',
+                                                                               'comment' => 'Bio::Annotation::Comment',
+                                                                               'reference' => 'Bio::Annotation::Reference',
+                                                                               'dblink' => 'Bio::Annotation::DBLink'
+                                                                             }
+                                                                }, 'Bio::Annotation::TypeManager' ),
+                                           '_annotation' => {
+                                                              'SEQUENCE_TARGET' => [
+                                                                                     bless( {
+                                                                                              'value' => '189,1 360,1 522,1 705,1 864,1 1101,1 1242,1 1353,1',
+                                                                                              '_root_verbose' => 0,
+                                                                                              'tagname' => 'SEQUENCE_TARGET'
+                                                                                            }, 'Buckley::Annotation::Parameter::Primer3' )
+                                                                                   ]
+                                                            }
+                                         }, 'Bio::Annotation::Collection' )
+               }, 'Bio::Seq' );
+ at t/02.t line 8.
+	main::__ANON__('$VAR1 = bless( {\x{a}                 \'primary_seq\' => bless( {...') called at lib/Buckley/PrimerDesigner/PostProcess/Tile.pm line 95
+	Buckley::PrimerDesigner::PostProcess::Tile::process('Buckley::PrimerDesigner::PostProcess::Tile=HASH(0x39f7938)', 'Bio::Seq=HASH(0x3a019f0)') called at lib/Buckley/PrimerDesigner.pm line 305
+	Buckley::PrimerDesigner::design('Buckley::PrimerDesigner=HASH(0x39f7c68)', 'Bio::Seq=HASH(0x35d8388)') called at t/02.t line 152
+# Looks like you planned 22 tests but ran 19.
+# Looks like your test exited with 25 just after 19.

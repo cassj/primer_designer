@@ -45,7 +45,7 @@ Should be overridden by subclasses to return a subref to use as a process
 =head2 global
 
 By default, processe objects are assumed to be iterative and the ->process
-method is called for each primer pair in turn. 
+method is called for each sequence in turn. 
 If a process object's ->global method returns true then the ->process method
 is only called once and is passed the entire set of results. 
 

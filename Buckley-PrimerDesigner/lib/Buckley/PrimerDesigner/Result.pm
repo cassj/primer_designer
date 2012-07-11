@@ -1,11 +1,5 @@
 # ABSTRACT: Primer design with bells on.
 
-# Don't think this is actually being used for anything. 
-# Delete?
-
-use strict;
-use warnings;
-
 package Buckley::PrimerDesigner::Result;
 use base 'Bio::Root::Root';
 

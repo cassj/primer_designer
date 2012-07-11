@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package Buckley::PrimerDesigner::PostProcess::UnafoldMelt;
-use base 'Buckley::PrimerDesigner::PreProcess';
+use base 'Buckley::PrimerDesigner::PostProcess';
 
 use Bio::Tools::Run::Unafold::melt;
 use Bio::Annotation::Collection;
@@ -57,6 +57,19 @@ sub max_tm{
   return $self->{max_tm};
 }
 
+#internal function to fold sequences
+sub _fold{
+  my ($self,$seq_feat) = @_;
+  my $folder = $self->_folder;
+  my $seq = $seq_feat->seq;
+  my $fold = $folder->run( $seq );
+  my $ac = $seq_feat->annotation() || Bio::Annotation::Collection->new();
+  my $param = Buckley::Annotation::Result::Unafold->new(-value =>  $fold->{Tm});
+  $ac->add_Annotation('Tm', $param);
+  $seq_feat->annotation($ac);
+
+}
+
 =head2 process
 
 Returns a subref that runs single stranded melt.pl from the 
@@ -74,43 +87,39 @@ sub process {
   my $p3_res = shift;
 
   my $folder = $self->_folder;
-  my @primer_pairs = grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} $p3_res->get_SeqFeatures;
+  
+  my @sfs = $p3_res->get_SeqFeatures;
 
-  foreach my $pair (@primer_pairs){
-    my ($fp, $rp) = ($pair->forward_primer, $pair->reverse_primer);
+  # this will retrieve PrimerPairs for you to process
+  my @primer_pairs = grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} @sfs;
+ 
+  # and this will retrieve single oligos 
+  my @oligos = grep {$_->isa('Bio::Tools::Primer3Redux::Primer')  && $_->oligo_type eq 'ss_oligo'} @sfs;
 
-    my $seq = $pair->seq;
-    my $amp_fold = $folder->run( $seq );
-    my $ac = $pair->annotation() || Bio::Annotation::Collection->new();
-    my $param = Buckley::Annotation::Result::Unafold->new(-value =>  $amp_fold->{Tm});
-    $ac->add_Annotation('Tm', $param);
-    $pair->annotation($ac);
-
-    $seq =  $fp->seq;
-    my $fp_fold = $folder->run( $seq );
-    $ac = $fp->annotation() || Bio::Annotation::Collection->new();
-    $param = Buckley::Annotation::Result::Unafold->new(-value =>  $fp_fold->{Tm});
-    $ac->add_Annotation('Tm', $param);
-    $fp->annotation($ac);
-
-    $seq =  $rp->seq;
-    my $rp_fold = $folder->run($seq);
-    $ac = $rp->annotation() || Bio::Annotation::Collection->new();
-    $param = Buckley::Annotation::Result::Unafold->new(-value =>  $rp_fold->{Tm});
-    $ac->add_Annotation('Tm', $param);
-    $rp->annotation($ac);
+  my @new_sfs;
+  if (scalar(@primer_pairs)){
+    #process primer pairs if we have any
+    foreach my $pair (@primer_pairs){
+      my ($fp, $rp) = ($pair->forward_primer, $pair->reverse_primer);
+      $self->_fold($pair);
+      $self->_fold($fp);
+      $self->_fold($rp);
+    }
+    @new_sfs = grep {$self->_check_tm($_)} @primer_pairs;
+  }else{
+    #process single oligos 
+    foreach my $probe (@oligos){
+      $self->_fold($probe);
+    }
+    @new_sfs = grep {$self->_check_tm($_)} @oligos;
   }
 
   #Now remove all seq features, delete the ones that failed and add everything else back.
-
-  my @sfs = $p3_res->get_SeqFeatures;
   my @other = grep {!$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} @sfs;
-  my @primerpairs = grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} @sfs;
-  @primerpairs = grep {$self->_check_tm($_)} @primerpairs;
-
   $p3_res->remove_SeqFeatures();
   $p3_res->add_SeqFeature(@other);
-  $p3_res->add_SeqFeature(@primerpairs);
+  $p3_res->add_SeqFeature(@sfs);
+  
   return $p3_res;
 }
 
