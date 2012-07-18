@@ -107,7 +107,7 @@ sub process {
  
   # if we have both, use primerpairs as the oligos will be internal.
   # otherwise treat oligos as probes.
-  my @sfs =  scalar(@primer_pairs) ? @primer_pairs : @oligos;
+  @sfs =  scalar(@primer_pairs) ? @primer_pairs : @oligos;
 
   # tile the seq features
   my $g = Graph->new();
@@ -152,6 +152,7 @@ sub process {
   foreach my $start (@valid_starts){
     foreach my $end (@valid_ends){
       my $l = $apsp->path_length($start, $end);
+      next unless $l;
       $length = $l unless $length;
       if ($l < $length){
         $length = $l;
