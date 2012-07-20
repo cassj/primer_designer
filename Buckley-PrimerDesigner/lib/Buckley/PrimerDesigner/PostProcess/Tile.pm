@@ -73,23 +73,12 @@ sub opt_dist {
   return $self->{_opt_dist};
 }
 
-=head global
-
-Returns true - this processor operates on the entire set of 
-primers / probes
-
-=cut
-sub global {
-  return 1;
-}
-
 =head2 process
 
 Returns a subref that calculates the optimal tile path for
 the primers / probes on a sequence.
 
-ll primers are returned, but members of the tile are annotated with 
-a Buckley::Annotation::Result::TilePosition annotation.
+Only primers / probes that are part of the path will be returned.
 
 =cut
 

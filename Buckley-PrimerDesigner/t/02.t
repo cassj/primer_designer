@@ -11,7 +11,7 @@ use Bio::Root::Test;
 use Bio::Seq;
 use Buckley::PrimerDesigner;
 
-test_begin(-tests => 24);
+test_begin(-tests => 26);
 my $debug = test_debug();
 
 use_ok('Buckley::PrimerDesigner::PreProcess');
@@ -153,6 +153,13 @@ $pd->register_post_process($post);
 ok(@res =  $pd->design($seq));
 
 
+#########
+## Draw PostProcess
 
-
+use_ok('Buckley::PrimerDesigner::PostProcess::Draw');
+$post = Buckley::PrimerDesigner::PostProcess::Draw->new('-dir' => 't/pics');
+$pd = Buckley::PrimerDesigner->new(-verbose => $debug);
+$pd->primer3->set_parameters( %params );
+$pd->register_post_process($post);
+ok(@res = $pd->design($seq) );
 

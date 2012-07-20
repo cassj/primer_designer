@@ -95,10 +95,10 @@ sub process {
  
   # and this will retrieve single oligos 
   my @oligos = grep {$_->isa('Bio::Tools::Primer3Redux::Primer')  && $_->oligo_type eq 'ss_oligo'} @sfs;
-
+  
   my @new_sfs;
-  if (scalar(@primer_pairs)){
-    #process primer pairs if we have any
+  if (scalar(@primer_pairs)){ 
+   #process primer pairs if we have any
     foreach my $pair (@primer_pairs){
       my ($fp, $rp) = ($pair->forward_primer, $pair->reverse_primer);
       $self->_fold($pair);
@@ -130,11 +130,13 @@ sub _check_tm {
   my $max_tm = $self->max_tm;
   my ($tm) = $feat->annotation->get_Annotations("Tm");
   return 0 if $tm->value > $max_tm;
-  my ($fp, $rp) = ($feat->forward_primer, $feat->reverse_primer);
-  ($tm) = $rp->annotation->get_Annotations("Tm");
-  return 0 if $tm->value > $max_tm;
-  ($tm) = $rp->annotation->get_Annotations("Tm");
-  return 0 if $tm->value > $max_tm;
+  if ($feat->isa('Bio::Tools::Primer3Redux::PrimerPair')){
+    my ($fp, $rp) = ($feat->forward_primer, $feat->reverse_primer);
+    ($tm) = $rp->annotation->get_Annotations("Tm");
+    return 0 if $tm->value > $max_tm;
+    ($tm) = $rp->annotation->get_Annotations("Tm");
+    return 0 if $tm->value > $max_tm;
+  }
   return 1;
 }
 

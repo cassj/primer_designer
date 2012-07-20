@@ -125,7 +125,6 @@ eval "require $seq_fetcher" or die "Couldn't load $seq_fetcher";
 # sequence fetcher args from config
 my %sf_args = %{$config->{$seq_fetcher} || {}};
 
-
 #add bioperl style -param_name, just in case
 foreach (grep {!/^-/} keys %sf_args){
     $sf_args{"-$_"}= $sf_args{$_};
@@ -170,29 +169,43 @@ my @res = $pd->design(@ids);
 foreach my $r (@res){
   print "\n########################\n".$r->display_id,"\n";
   print $r->seq."\n";
-  my @pairs = grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} $r->get_SeqFeatures();
-  print "No primers found\n" unless scalar @pairs;
+  my @sfs = $r->get_SeqFeatures();
+  my @pairs = grep {$_->isa('Bio::Tools::Primer3Redux::PrimerPair')} @sfs;
+  my @oligos = grep {$_->isa('Bio::Tools::Primer3Redux::Primer')  && $_->oligo_type eq 'ss_oligo'} @sfs;
 
-  foreach my $p (@pairs){
-    my ($amplicon_tm) = $p->annotation->get_Annotations("Tm");
-    print "\nPAIR\n-------\nAmplicon MFold Tm: ". $amplicon_tm->value. "\n";
-    print "Amplicon Length: ", length $p->seq->seq,"\n";
+  print "No primers found\n" unless (scalar @pairs || scalar @oligos);
 
-    my ($fp, $rp) = ($p->forward_primer, $p->reverse_primer);
-    print "Forward\n";
-    print "\t".$fp->seq->seq,"\n";
-    print "\tTm: ", $fp->melting_temp,"\n";
-    print "\tGC: ", $fp->gc_content,"\n";
-    my ($fp_tm) = $fp->annotation->get_Annotations("Tm");
-    print "\tMFold Tm: ". $fp_tm->value. "\n";
+  if (scalar @pairs){
+    foreach my $p (@pairs){
+      my ($amplicon_tm) = $p->annotation->get_Annotations("Tm");
+      print "\nPAIR\n-------\nAmplicon MFold Tm: ". $amplicon_tm->value. "\n";
+      print "Amplicon Length: ", length $p->seq->seq,"\n";
 
-    print "Reverse\n";
-    print "\t".$rp->seq->seq,"\n";
-    print "\tTm: ",$rp->melting_temp,"\n";
-    print "\tGC: ", $rp->gc_content,"\n";
-    my ($rp_tm) = $rp->annotation->get_Annotations("Tm");
-    print "\tMFold Tm: ". $rp_tm->value. "\n";
+      my ($fp, $rp) = ($p->forward_primer, $p->reverse_primer);
+      print "Forward\n";
+      print "\t".$fp->seq->seq,"\n";
+      print "\tTm: ", $fp->melting_temp,"\n";
+      print "\tGC: ", $fp->gc_content,"\n";
+      my ($fp_tm) = $fp->annotation->get_Annotations("Tm");
+      print "\tMFold Tm: ". $fp_tm->value. "\n";
 
+      print "Reverse\n";
+      print "\t".$rp->seq->seq,"\n";
+      print "\tTm: ",$rp->melting_temp,"\n";
+      print "\tGC: ", $rp->gc_content,"\n";
+      my ($rp_tm) = $rp->annotation->get_Annotations("Tm");
+      print "\tMFold Tm: ". $rp_tm->value. "\n";
+    }
+  }else{
+    foreach my $o (@oligos){
+      print "Probe\n";
+      print "\t".$o->start.'-'.$o->end."\n";
+      print "\t".$o->seq->seq."\n";
+      print "\tTm: ",$o->melting_temp,"\n";
+      print "\tGC: ",$o->gc_content,"\n";
+      my ($o_tm) = $o->annotation->get_Annotations("Tm");
+      print "\tMfold Tm: ".$o_tm->value."\n" if $o_tm;
+    }
   }
 
 }
